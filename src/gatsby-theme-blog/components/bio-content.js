@@ -11,6 +11,6 @@ export default () => (
     {` `}
     Blog.
     <br />
-    I am a web developer.
+    Love sharing technology and hope you will love it.
   </Fragment>
 )
