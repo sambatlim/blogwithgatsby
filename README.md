@@ -9,5 +9,5 @@
 
 Quickly get started using the Gatsby blog theme! This starter creates a new Gatsby site that is preconfigured to work with the [official Gatsby blog theme](https://www.npmjs.com/package/gatsby-theme-blog).
 
-## 🚀 Site hosting at [Netlify](https://stupefied-kare-0e84fb.netlify.com/)
+## 🚀 Site hosting at [Netlify](https://sambat-tech.netlify.com/)
 
