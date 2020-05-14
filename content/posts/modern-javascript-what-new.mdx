@@ -1,6 +1,466 @@
 ---
-title: What new in each version of Modern javascript - ECMAScript(ES) since ES6 - ES11
+title: What new in each version of Modern javascript - ECMAScript(ES) from ES6 - ES11🔥
+date: 2020-01-29
+---
+If I could go back in my university life, Javascript would be my first go to programming language.You are pretty much able to create everything with javascript from the web application, mobile app, server side application, to the powerful computer application(using electron.js). I think this could convince you enough to learn javascript. so in order to get started with javascript at least you should know some of its history that this blog is for.
+At the day I write this blog post, javascript has release its 😍ES11(2020)😍 already.
+
+### Below is the brief what new? of all ES version(<q>click on the list below to jump to its section</q>):
+<ul>
+    <li><a href='#es2015-es6'>ES2015 (ES6)</a></li>
+    <li><a href='#🥰es2017-es8'>ES2016 (ES7)</a></li>
+    <li><a href='#🥰es2017-es8'>ES2017 (ES8)</a></li>
+    <li><a href='#🥰es2019-es10'>ES2018 (ES9)</a></li>
+    <li><a href='#🥰es2019-es10'>ES2019 (ES10)</a></li>
+    <li><a href='#es2020-es11'>ES2020 (ES11)</a></li>
+</ul>
 
 ---
 
-If I could go back in my university life, Javascript would be my first go to programming language.you are pretty much able to create everything with javascript from the web application, mobile app, server side application, to the powerful computer application(using electron.js). I think this could convince you enough to learn javascript. so inother to get started with javascript at least you should know some of its history that this blog is for.     
+### 💪ES2015 (ES6)
+
+In 2015, javascript back to game after been ignored by most of programmer (why javascript is bad? [discuss on quora](https://www.quora.com/Is-JavaScript-really-a-bad-language)).
+2015 was the golden year of javascript and had the biggest update of all time so let's dive deep into what new?.
+
+These are the main update of ES2015:
+- let/const
+- Arrow Functions
+- Classes
+- Modules (import/export)
+- Template Strings
+- Default function parameters
+- Rest/Spread Operators
+- Array/Object Destructuring
+- Promises
+
+#### Let/const
+
+`let` and `const` were introduce and recommend to use over `var`.
+
+``` 
+let message = 'hello';
+message = 'good bye'; // work just fine
+
+```
+```
+const message = 'hello';
+message ='good bye';//error value of message cannot be changed; 
+
+```
+
+
+#### Arrow function
+
+Usually we write function like this:
+```
+function sum(value1, value2){
+    return value1 + value2;
+}
+
+```
+in arrow function we write like this:
+
+```
+const sum = (value1, value2)=>{
+    return value1 + value2;
+}
+
+```
+this part `()=>{}` is called arrow funtion or we can call `anonymous function` bacause it has no name and `const sum` is store the arrow function.
+
+This is another way to write the arrow function in case we don't have the complicated operation inside the function.
+
+```
+const sum = (value1, value2) => value1 + value2
+
+```
+
+#### Classes
+
+In ES6 we are able to write js in OOP(Object oriented programming).
+
+```
+class Calculator{
+    constructor(moneyBeforeDiscount){
+        this.moneyBeforeDiscount = moneyBeforeDiscount;
+    }
+    moneyAfterDiscount(discountRate){
+        return this.moneyBeforeDiscount * (100-discountRate)/100;
+    }
+}
+```
+> we create new class called `Calculator`(class need write in the uppercase for the letter).
+In  calculator we construct one argument called `moneyBeforeDiscount`.
+
+```
+const bill = new Calculator(5000);
+console.log('Total after discount :' + bill.moneyAfterDiscount(5));
+```
+> we instantiate the object of the `Calculator` called bill and we need to print out the total after discount.
+
+We can also use class inheritance with keyword `extend` and reference back to super class with keyword `super`.
+
+```
+class MoreCalculate extend Calculator{
+    constructor(moneyBeforeDiscount,discountRate,moneyExchange){
+        super(moneyBeforeDiscount);
+        this.moneyExchange = moneyExchange;
+        this.discountRate = discountRate;
+    }
+
+    moneyAfterExchange(){
+        return this.moneyAfterDiscount(this.discountRate)/this.moneyExchange;
+    }
+}
+
+
+```
+
+#### Modules (import/export)
+
+By usuall js doesn't support `module` management that we can `import` and `export` anything from the difference file.
+
+```
+const add = (a, b) => a + b
+
+const multiply = (a, b) => a * b
+
+export { add, multiply }
+
+```
+
+```
+import { add } from './calculator'
+
+console.log(add(2, 3)); //5
+
+```
+
+#### Template Strings
+
+This templare strings come to replace `+` when we want to concatenate the string with the convenience way `${}`.
+
+```
+const sum = 2+5;
+console.log(`2 + 5 = ${sum}`);
+
+//normal method
+console.log('2 + 5 ='+ sum);
+```
+
+```
+const message = 'khmer  coder';
+console.log(`good morning, ${message} and ${2+2}`);
+//good morning, khmer coder and 4;
+
+```
+#### Default function parameters
+
+ES6 also include the `default parameter` which make the function more sense when developer not provide the parameter so the function will use the default parameter that has been assigned as default.
+
+```
+const greeting= (name,message = 'hello')=> console.log(`${message}, ${name}`);
+greeting('sambat'); //hello, sambat
+greeting('khmer coder','hi'); // hi, khmer coder
+```
+
+#### Rest/Spread Operators
+
+Rest Operators is used when there are many or we don't want to specific the amount of `arguments` of that function by using `...`.
+
+```
+function add(...numbers) {
+  sum = 0
+  for (const n of numbers) {
+    sum += n
+  }
+  return sum
+}
+
+console.log(add(1, 2, 3)) // 6
+
+```
+
+Spread Operator is used to join the array with `...` .
+
+```
+const a = [4, 5, 6]
+const b = [1, 2, 3, ...a, 7] // [1, 2, 3, 4, 5, 6, 7]
+
+```
+
+#### Array/Object Destructuring
+
+Array and Object Destructuring is used when we want to get the value of that array or object out of its own array or object.
+
+Array Destructuring:
+
+```
+const studentScore = [50, 25, 79]
+
+const [first, second] = studentScore
+
+console.log(`${first}, ${second}`) // 50, 25
+
+```
+
+Object Destructuring:
+
+```
+const studentA = {
+  name: 'A',
+  score: 99
+}
+
+const { name, score } = studentA
+console.log(`${name}: ${score}`) // A: 99
+
+```
+
+#### Promises
+
+Promises is widely used in `asynchronous` programming to handle the result `.then` of the execution and `.catch` the error.
+
+```
+url = 'https://api.github.com/search/users?q=peacher5'
+
+fetch(url)
+  .then(response => response.json())
+  .then(result => {
+    console.log(result)
+  })
+
+```
+
+
+---
+
+### 🥺ES2016 (ES7)
+
+ES2016 has the minor update from the ES6 such as: method `.includes()` to check the value of array, and (`**`) for exponential operator.
+
+#### Array.includes()
+```
+const number = [1,2,3]
+console.log(number.includes(1)); //true
+console.log(number.includes(7)); //false
+
+```
+
+#### Exponential Operator (`**`)
+
+```
+console.log(2 ** 3) // 8
+```
+
+---
+
+### 🥰ES2017 (ES8)
+
+This ES version help writing the asynchronous programming more convenience by introducing the `async/await` which could get rid of callback hell(introduce by normal callback function) and improve the code readability of promise.
+
+#### Async Functions (async/await)
+example:
+
+```
+url = 'https://api.github.com/search/users?q=sambatlim'
+
+```
+with promise
+
+```
+fetch(url)
+  .then(response => response.json())
+  .then(result => {
+    console.log(result)
+  })
+```
+
+with async/await (can be used only with async function)
+
+```
+async function getgithubprofile(){
+    const response = await fetch(url)
+    const result = await response.json()
+    console.log(result)
+}
+
+```
+
+recommend to read more here: [article by javascript info](https://javascript.info/async-await).
+
+---
+
+### 🥺ES2018 (ES9)
+
+In this update, ES9 introduce the no thing new but increasing the ability of Rest/Spread Properties (`...`) that was introduced since ES6.
+
+#### Rest Properties
+
+Now we can use `Rest Properties` with object.
+
+```
+const options = {
+  enabled: true,
+  text: 'Hello',
+  color: 'red'
+}
+
+const { enabled, ...others } = options
+
+console.log(enabled) // true
+console.log(others)  // { text: 'Hello', color: 'red' }
+
+```
+#### Spread Properties
+
+```
+const moreOptions = {
+  text: 'Hello',
+  color: 'red'
+}
+
+const options = { enabled: true, ...moreOptions }
+
+console.log(options) // { enabled: true, text: 'Hello', color: 'red' }
+
+```
+
+---
+
+### 🥰ES2019 (ES10)
+
+This update help developer get rid of the `e` error parameter that has been catch by the promise.
+
+```
+// Before
+
+try {
+  fetch('https://example.com')
+} catch (e) {
+  console.log(`Nothing wrong.`)
+}
+```
+
+```
+// After
+
+try {
+  fetch('https://example.com')
+} catch {
+  console.log(`Nothing wrong.`)
+}
+```
+
+---
+
+### 🔥ES2020 (ES11)
+
+ES2020 introduce you the brand new features that has been updated as below:
+
+- Dynamic Import
+- BigInt
+- Nullish Coalescing Operator(`??`)
+- Optional Chaining (`?.`)
+
+#### Dynamic Import
+
+In ES6 when we want to import we need to `import` at the beginning of the file (`static import`) and cannot add the condition to it.
+For Dynamic import we can easily assign what module that we need to import so that we no need to import all module at the same time (`import on demand`)
+which is very useful for big application that has a lot of module to import.
+
+```
+let stageId = 'A'
+let stage
+
+if (stageId === 'A') {
+  stage = await import('./stages/A')
+} else {
+  stage = await import('./stages/B')
+}
+
+stage.run()
+
+```
+
+read more at: [v8.dev](https://v8.dev/features/dynamic-import).
+
+#### BigInt
+
+bigint can store the number larger than 2<sup>53</sup> - 1.
+
+To create the bigint you just simply add `n` at the last of the number.
+
+```
+const big = 123456789n
+```
+
+or convert to bigint by adding `BigInt(yournumber)`.
+
+```
+const alsoBig = BigInt(20)
+```
+
+`Warning` the operator `+`,`-`,`*`,`/` can only used with the number that has the same type of BigInt.
+
+#### Nullish Coalescing Operator (??)
+
+Before introduce you the `Nullish Coalescing Operator` let talk the way you write code to check whether the value of `score` for example exist or not `null` or `undefined` you usually write as below:
+
+```
+let score = null
+
+console.log(score || 'No score')
+//this code will print 'No score'
+```
+The problem with this is it will check `0` `Nan` as the false value as well.
+
+```
+let score = 0
+
+console.log(score || 'No score')
+// this will print 'No score' instead of 0;
+```
+
+This is the reason `??` come to help.
+
+```
+let score = 0
+
+console.log(score ?? 'No score')
+
+//will print 0;
+```
+
+
+#### Optional Chaining (?.)
+
+let imagine you have nested object. (objects inside object) example:
+
+```
+    const student ={
+        profile:{
+            school:{
+                name:'RUPP'
+            }
+        }
+    }
+```
+if you want to get name of school name of student you might do something like this `student.profile.school.name`.
+what if `student` doesn't exist?
+You might error like below:
+```
+Uncaught TypeError: Cannot read property 'school' of undefined
+```
+
+so to get rid of the error you can write like this:
+`student.profile && student.profile.school.name` long right?
+so with `Optional Chaining (?.)` you can write as below:
+```
+data.profile?.school.name
+```
+This method will filter out the error that caused by `null` or `undefined`.
+
+---
+
+🎉🎉This is it of what new? in javascript see you next year....🎉🎉
