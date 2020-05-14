@@ -7,10 +7,10 @@ import { Styled } from "theme-ui"
 
 export default () => (
   <Fragment>
-    Welcome to <Styled.a href="#">Sambat</Styled.a>
+    Welcome to <Styled.a href="https://sambat-tech.netlify.app/">Sambat</Styled.a>
     {` `}
     Blog.
     <br />
-    Love sharing technology and hope you will love it.
+    I blog about web development and design.
   </Fragment>
 )
