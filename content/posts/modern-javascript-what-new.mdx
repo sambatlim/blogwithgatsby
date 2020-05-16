@@ -34,6 +34,7 @@ These are the main updates of ES2015:
 - Rest/Spread Operators
 - Array/Object Destructuring
 - Promises
+- Iterators and Generators
 
 #### Let/const
 
@@ -234,6 +235,50 @@ fetch(url)
 
 ```
 
+#### Iterators and Generators
+
+Iterators:<br/>
+ES6 provided the new looping syntax called `for of` which is similar to `foreach` in most programming languages.
+```
+var arr= [a,b,c];
+for(var value of arr){
+  console.log(value);
+}
+//output: a, b, c
+```
+Generators:<br/>
+Generators can return (`yield`) multiple values, one after another, on demand. They work great with Iterators.
+To create the generator we need the special syntax construct: `function*`, so-called generator function.
+To get the value from the generator function we need to use method `next()` of the generator.`next()` will always return the object of two properties:
+`value`:the yielded value and `done`:`true` if the function code has finished,otherwise `false`.
+When It reached the `return` statement, the function will finish and return `done`:`true`. 
+
+```
+function* generateSequence() {
+  yield 1;
+  yield 2;
+  return 3;
+}
+
+let generator = generateSequence();
+
+let one = generator.next();
+console.log(JSON.stringify(one));
+//output: {value: 1, done: false}
+
+let two = generator.next();
+console.log(JSON.stringify(two));
+//output: {value: 2, done: false}
+
+let three = generator.next();
+console.log(JSON.stringify(three));
+//output: {value: 3, done: true}
+//function has finished because it reach the return statement.
+
+
+```
+
+[read more about generators](https://javascript.info/generators)
 
 ---
 
