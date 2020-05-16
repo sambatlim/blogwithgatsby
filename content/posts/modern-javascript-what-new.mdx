@@ -4,10 +4,10 @@ date: 2020-05-14
 ---
   <image src='https://i.imgur.com/2GZBAEo.jpg'/>
 
-  If we need to choose only one programming language to expert on, Javascript would be my first go to programming language.You are pretty much able to create everything with javascript from the web application, mobile app, server side application, to the powerful computer application(using electron.js). I think this could convince you enough to learn javascript. so in order to get started with javascript at least you should know some of its history that this blog is for.
-At the day I write this blog post, javascript has release its 😍ES11(2020)😍 already.
+  If I need to choose only one programming language to master on, Javascript would be my choice. With Javascript we are able to create everything from the web application, mobile app, server side application, to the powerful computer application(using electron.js). I think this could convince you enough to learn javascript. So in order to get started with javascript at least you should know some of its history that this blog is for.
+At the time I write this blog post, javascript has released its 😍ES11(2020)😍 already.
 
-### Below is the brief what new? of all ES version(<q>click on the list below to jump to its section</q>):
+### Below is the brief of what new? of all ES version(<q>click on the list below to jump to its section</q>):
 <ul>
     <li><a href='#es2015-es6'>ES2015 (ES6)</a></li>
     <li><a href='#🥰es2017-es8'>ES2016 (ES7)</a></li>
@@ -21,10 +21,10 @@ At the day I write this blog post, javascript has release its 😍ES11(2020)😍
 
 ### 💪ES2015 (ES6)
 
-In 2015, javascript back to game after been ignored by most of programmer (why javascript is bad? [discuss on quora](https://www.quora.com/Is-JavaScript-really-a-bad-language)).
-2015 was the golden year of javascript and had the biggest update of all time so let's dive deep into what new?.
+In 2015, javascript was back to game after had been ignored by most of programmer (why javascript is bad? [discuss on quora](https://www.quora.com/Is-JavaScript-really-a-bad-language)).
+2015 was the golden year of javascript and had its biggest update of all time so let's dive deep into this version main update.
 
-These are the main update of ES2015:
+These are the main updates of ES2015:
 - let/const
 - Arrow Functions
 - Classes
@@ -37,7 +37,7 @@ These are the main update of ES2015:
 
 #### Let/const
 
-`let` and `const` were introduce and recommend to use over `var`.
+`let` and `const` were introduced. It is highly recommended to use over `var`.
 
 ``` 
 let message = 'hello';
@@ -53,14 +53,14 @@ message ='good bye';//error value of message cannot be changed;
 
 #### Arrow function
 
-Usually we write function like this:
+With the old way, we write function as below:
 ```
 function sum(value1, value2){
     return value1 + value2;
 }
 
 ```
-in arrow function we write like this:
+But with arrow function we write like this:
 
 ```
 const sum = (value1, value2)=>{
@@ -68,7 +68,7 @@ const sum = (value1, value2)=>{
 }
 
 ```
-this part `()=>{}` is called arrow funtion or we can call `anonymous function` bacause it has no name and `const sum` is store the arrow function.
+this part `()=>{}` is called arrow funtion or we can also call `anonymous function` bacause it has no name and `const sum` is assigned to store the arrow function.
 
 This is another way to write the arrow function in case we don't have the complicated operation inside the function.
 
@@ -91,7 +91,7 @@ class Calculator{
     }
 }
 ```
-> we create new class called `Calculator`(class need write in the uppercase for the letter).
+> we create new class called `Calculator`(name of the class need start with uppercase).
 In  calculator we construct one argument called `moneyBeforeDiscount`.
 
 ```
@@ -120,7 +120,7 @@ class MoreCalculate extend Calculator{
 
 #### Modules (import/export)
 
-Before ES6 js doesn't support `module` management that we can `import` and `export` anything from the difference file.
+Before ES6, js doesn't support `module` management that we can `import` and `export` anything from the difference file.
 
 ```
 const add = (a, b) => a + b
@@ -158,7 +158,7 @@ console.log(`good morning, ${message} and ${2+2}`);
 ```
 #### Default function parameters
 
-ES6 also include the `default parameter` which make the function more sense when developer not provide the parameter so the function will use the default parameter that has been assigned as default.
+ES6 also include the `default parameter` which make the function more sense when developer did not provide the parameter so the function will use the default parameter that has been assigned as default.
 
 ```
 const greeting= (name,message = 'hello')=> console.log(`${message}, ${name}`);
@@ -168,7 +168,7 @@ greeting('khmer coder','hi'); // hi, khmer coder
 
 #### Rest/Spread Operators
 
-Rest Operators is used when there are many or we don't want to specific the amount of `arguments` of that function by using `...`.
+Rest Operators is used when there are many arguments or we don't want to specific the amount of `arguments` of that function by using `...`.
 
 ```
 function add(...numbers) {
@@ -193,7 +193,7 @@ const b = [1, 2, 3, ...a, 7] // [1, 2, 3, 4, 5, 6, 7]
 
 #### Array/Object Destructuring
 
-Array and Object Destructuring is used when we want to get the value of that array or object out of its own array or object.
+Array and Object Destructuring are used when we want to get the value of that array or object out of its own array or object.
 
 Array Destructuring:
 
@@ -221,7 +221,7 @@ console.log(`${name}: ${score}`) // A: 99
 
 #### Promises
 
-Promises is widely used in `asynchronous` programming to handle the result `.then` of the execution and `.catch` the error.
+Promises is widely used in `asynchronous` programming to handle the result  with `.then` of the execution and catch the error with `.catch`.
 
 ```
 url = 'https://api.github.com/search/users?q=sambatlim'
@@ -239,7 +239,7 @@ fetch(url)
 
 ### 🥺ES2016 (ES7)
 
-ES2016 has the minor update from the ES6 such as: method `.includes()` to check the value of array, and (`**`) for exponential operator.
+ES2016 introduced the minor update from the ES6 such as: method `.includes()` to check the value of array, and (`**`) for exponential operator.
 
 #### Array.includes()
 ```
@@ -259,7 +259,7 @@ console.log(2 ** 3) // 8
 
 ### 🥰ES2017 (ES8)
 
-This ES version help writing the asynchronous programming more convenience by introducing the `async/await` which could get rid of callback hell(introduce by normal callback function) and improve the code readability of promise.
+ES8 help us writing the asynchronous programming in the more convenient way by introducing the `async/await` that we could get rid of callback hell(introduce by normal callback function) and improve the code readability of promise.
 
 #### Async Functions (async/await)
 example:
@@ -295,7 +295,7 @@ recommend to read more here: [article by javascript info](https://javascript.inf
 
 ### 🥺ES2018 (ES9)
 
-In this update, ES9 introduce the no thing new but increasing the ability of Rest/Spread Properties (`...`) that was introduced since ES6.
+In this update, ES9 introduced no thing new but increasing the ability of Rest/Spread Properties (`...`) that was introduced since ES6.
 
 #### Rest Properties
 
@@ -358,7 +358,7 @@ try {
 
 ### 🔥ES2020 (ES11)
 
-ES2020 introduce you the brand new features that has been updated as below:
+ES2020 introduced some brand new features as below:
 
 - Dynamic Import
 - BigInt
