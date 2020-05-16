@@ -385,7 +385,7 @@ This update help developer get rid of the `e` error parameter that has been catc
 try {
   fetch('https://example.com')
 } catch (e) {
-  console.log(`Nothing wrong.`)
+  console.log(`e`)
 }
 ```
 
@@ -395,7 +395,7 @@ try {
 try {
   fetch('https://example.com')
 } catch {
-  console.log(`Nothing wrong.`)
+  console.log(`something wrong.`)
 }
 ```
 
