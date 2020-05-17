@@ -1,13 +1,13 @@
 ---
-title: What new in each version of Modern javascript - ECMAScript(ES) from ES6 - ES11🔥
-date: 2020-05-14
+title: What new in each version of Modern Javascript - ECMAScript(ES) from ES6 - ES11🔥
+date: 2020-05-16
 ---
   <image src='https://i.imgur.com/2GZBAEo.jpg'/>
 
-  If I need to choose only one programming language to master on, Javascript would be my choice. With Javascript we are able to create everything from the web application, mobile app, server side application, to the powerful computer application(using electron.js). I think this could convince you enough to learn javascript. So in order to get started with javascript at least you should know some of its history that this blog is for.
-At the time I write this blog post, javascript has released its 😍ES11(2020)😍 already.
+  If I need to choose only one programming language to master, Javascript would be my choice. With Javascript we are able to create everything from web applications, mobile apps, and server-side applications, even desktop application using electron.js. I think this should convince you to learn Javascript! In order to get started with Javascript you should know some of its history - that's what this blog is for.
+At the time I write this blog post, Javascript has released its 😍ES11(2020)😍 already.
 
-### Below is the brief of what new? of all ES version(<q>click on the list below to jump to its section</q>):
+### Below is a brief overview of what is new in all ES versions (<q>click on the list below to jump to its section</q>):
 <ul>
     <li><a href='#es2015-es6'>ES2015 (ES6)</a></li>
     <li><a href='#🥰es2017-es8'>ES2016 (ES7)</a></li>
@@ -21,11 +21,11 @@ At the time I write this blog post, javascript has released its 😍ES11(2020)�
 
 ### 💪ES2015 (ES6)
 
-In 2015, javascript was back to game after had been ignored by most of programmer (why javascript is bad? [discuss on quora](https://www.quora.com/Is-JavaScript-really-a-bad-language)).
-2015 was the golden year of javascript and had its biggest update of all time so let's dive deep into this version main update.
+In 2015, Javascript was back in the game after it had been ignored by most serious programmers ([**Why is Javascript bad?** discussion on quora](https://www.quora.com/Is-JavaScript-really-a-bad-language)).
+2015 was the golden year of Javascript and had its biggest update of all time.
 
 These are the main updates of ES2015:
-- let/const
+- Let/Const Variable Declaration
 - Arrow Functions
 - Classes
 - Modules (import/export)
@@ -36,51 +36,45 @@ These are the main updates of ES2015:
 - Promises
 - Iterators and Generators
 
-#### Let/const
+#### Let/Const
 
-`let` and `const` were introduced. It is highly recommended to use over `var`.
+`let` and `const` variable declarations were introduced. It is highly recommended to use them over `var` to be explicit about the nature of the variable.
 
 ``` 
 let message = 'hello';
-message = 'good bye'; // work just fine
-
+message = 'good bye'; // works just fine because let declares variables that can be altered
 ```
 ```
 const message = 'hello';
-message ='good bye';//error value of message cannot be changed; 
-
+message ='good bye'; // returns an error because the value of the Constant message cannot be changed
 ```
-
 
 #### Arrow function
 
-With the old way, we write function as below:
+With the old way, we write would write functions as below:
 ```
 function sum(value1, value2){
     return value1 + value2;
 }
-
 ```
-But with arrow function we write like this:
+But with arrow function we can write in a compressed way, like this:
 
 ```
 const sum = (value1, value2)=>{
     return value1 + value2;
 }
-
 ```
-this part `()=>{}` is called arrow funtion or we can also call `anonymous function` bacause it has no name and `const sum` is assigned to store the arrow function.
+The syntax `()=>{}` is called an arrow function and the constant `sum` is declared to store it. This is also an example of an `anonymous function` because it has no explicit name, but is immediately assigned to a variable.
 
-This is another way to write the arrow function in case we don't have the complicated operation inside the function.
+We can use an even more simple syntax if the operation we are performing immediately returns a value:
 
 ```
 const sum = (value1, value2) => value1 + value2
-
 ```
 
 #### Classes
 
-In ES6 we are able to write js in OOP(Object oriented programming).
+In ES6 we are able to write Javascript in with Object Oriented Programming (OOP) principles.
 
 ```
 class Calculator{
@@ -92,16 +86,16 @@ class Calculator{
     }
 }
 ```
-> we create new class called `Calculator`(name of the class need start with uppercase).
-In  calculator we construct one argument called `moneyBeforeDiscount`.
+> We create new class called `Calculator` (convention encourages the use of a capital letter when creating a class, but it isn't required).
+The Calculator class constructor is called whenever the `new` keyword is used to make an instance of the class, and expects one parameter called `moneyBeforeDiscount`.
 
 ```
 const bill = new Calculator(5000);
 console.log('Total after discount :' + bill.moneyAfterDiscount(5));
 ```
-> we instantiate the object of the `Calculator` called bill and we need to print out the total after discount.
+> We instantiate the object of the `Calculator` called `bill` and we need to print out the total after discount.
 
-We can also use class inheritance with keyword `extend` and reference back to super class with keyword `super`.
+We can also use class inheritance with keyword `extend` and reference back to parent class with the keyword `super`.
 
 ```
 class MoreCalculate extend Calculator{
@@ -115,33 +109,30 @@ class MoreCalculate extend Calculator{
         return this.moneyAfterDiscount(this.discountRate)/this.moneyExchange;
     }
 }
-
-
 ```
 
 #### Modules (import/export)
 
-Before ES6, js doesn't support `module` management that we can `import` and `export` anything from the difference file.
+Before ES6, Javascript didn't support module management natively. In ES6 though, we can `export` functions and variables from a file, and then `import` those elements in a different file.
 
 ```
+// MathLib.js
 const add = (a, b) => a + b
-
 const multiply = (a, b) => a * b
 
 export { add, multiply }
-
 ```
 
 ```
+// App.js
 import { add } from './calculator'
 
 console.log(add(2, 3)); //5
-
 ```
 
 #### Template Strings
 
-This templare strings come to replace `+` when we want to concatenate the string with the convenience way `${}`.
+Template strings replace repetative `+` string operations to concatenate reuglar strings and variables as well as allow multiline string variables. In order to interpolate variables inline just wrap the variable name in `${}`:
 
 ```
 const sum = 2+5;
@@ -155,59 +146,54 @@ console.log('2 + 5 ='+ sum);
 const message = 'khmer  coder';
 console.log(`good morning, ${message} and ${2+2}`);
 //good morning, khmer coder and 4;
-
 ```
 #### Default function parameters
 
-ES6 also include the `default parameter` which make the function more sense when developer did not provide the parameter so the function will use the default parameter that has been assigned as default.
+ES6 also includes the ability to set a `default parameter` which allows developers to set a fallback value if a function is called without necessary parameters.
 
 ```
-const greeting= (name,message = 'hello')=> console.log(`${message}, ${name}`);
-greeting('sambat'); //hello, sambat
-greeting('khmer coder','hi'); // hi, khmer coder
+const greeting = (name, message = 'Hello') => console.log(`${message}, ${name}`);
+greeting('Sambat'); // "Hello, Sambat"
+greeting('khmer coder','Hi'); // "Hi, khmer coder"
 ```
 
 #### Rest/Spread Operators
 
-Rest Operators is used when there are many arguments or we don't want to specific the amount of `arguments` of that function by using `...`.
+The Rest Operator (*not related to REST API models*) is used when there is an unknown or unlimited number of parameters in calling a function. By declaring `...` before a variable name in a function definition it will create an iterable variable of any length:
 
 ```
 function add(...numbers) {
   sum = 0
-  for (const n of numbers) {
+  for(const n of numbers) {
     sum += n
   }
   return sum
 }
 
 console.log(add(1, 2, 3)) // 6
-
 ```
 
-Spread Operator is used to join the array with `...` .
+The Spread Operator is used to "spread out" an array by returning the individual values in order by entering `...` before a variable. One use of this is to insert one array into the center of another, like:
 
 ```
 const a = [4, 5, 6]
 const b = [1, 2, 3, ...a, 7] // [1, 2, 3, 4, 5, 6, 7]
-
 ```
 
 #### Array/Object Destructuring
 
-Array and Object Destructuring are used when we want to get the value of that array or object out of its own array or object.
+Array and Object Destructuring are used when we want to assign the value of variables from somewhere in an array or object directly. When destructuring, the variables on the left of the assignment operator are updated but the  Array or Object is left unchanged.
 
-Array Destructuring:
+Array destructuring uses the order of the array to return a value and assigns it to the variable in the same position on the left side of the assignment operator.
 
 ```
 const studentScore = [50, 25, 79]
-
 const [first, second] = studentScore
 
-console.log(`${first}, ${second}`) // 50, 25
-
+console.log(first, second) // 50, 25
 ```
 
-Object Destructuring:
+Object destructuring matches the variable names matched to the Object's properties to perform the assignment.
 
 ```
 const studentA = {
@@ -217,12 +203,11 @@ const studentA = {
 
 const { name, score } = studentA
 console.log(`${name}: ${score}`) // A: 99
-
 ```
 
 #### Promises
 
-Promises is widely used in `asynchronous` programming to handle the result  with `.then` of the execution and catch the error with `.catch`.
+Promises are widely used in asynchronous programming to handle HTTP requests and other long running processes. Promises return a result with to a function declared with the `.then` method, and `.then`s can be chained to perform multiple process steps. Error handling is done with the `.catch` method calling its own function. All Promise handler functions can be declared anonymously inline.
 
 ```
 url = 'https://api.github.com/search/users?q=sambatlim'
@@ -238,19 +223,21 @@ fetch(url)
 #### Iterators and Generators
 
 Iterators:<br/>
-ES6 provided the new looping syntax called `for of` which is similar to `foreach` in most programming languages.
+ES6 provided the new looping syntax `for x of y`, which is similar to `foreach` in most programming languages.
 ```
-var arr= [a,b,c];
-for(var value of arr){
+let arr= [a,b,c];
+for(let value of arr){
   console.log(value);
 }
 //output: a, b, c
 ```
 Generators:<br/>
 Generators can return (`yield`) multiple values, one after another, on demand. They work great with Iterators.
-To create the generator we need the special syntax construct: `function*`, so-called generator function.
-To get the value from the generator function we need to use method `next()` of the generator.`next()` will always return the object of two properties:
-`value`:the yielded value and `done`:`true` if the function code has finished,otherwise `false`.
+To create the generator we need the special syntax construct: `function*` to explicity declare a normal function a generator.
+To get a value we need to use the generator method `next()`. `next()` will always return an Object with two properties:
+* `value`: the value that is `yield`ed or `return`ed
+* `done`: `true` if the function code has finished, otherwise `false`
+
 When It reached the `return` statement, the function will finish and return `done`:`true`. 
 
 ```
@@ -273,25 +260,22 @@ console.log(JSON.stringify(two));
 let three = generator.next();
 console.log(JSON.stringify(three));
 //output: {value: 3, done: true}
-//function has finished because it reach the return statement.
-
-
+//function has finished because it reached the return statement.
 ```
 
-[read more about generators](https://javascript.info/generators)
+[read more about generators](https://Javascript.info/generators)
 
 ---
 
 ### 🥺ES2016 (ES7)
 
-ES2016 introduced the minor update from the ES6 such as: method `.includes()` to check the value of array, and (`**`) for exponential operator.
+ES2016 introduced the minor update from the ES6 such as the Array method `.includes()` to check for the presence of a value, and an exponential operator `**`.
 
 #### Array.includes()
 ```
 const number = [1,2,3]
 console.log(number.includes(1)); //true
 console.log(number.includes(7)); //false
-
 ```
 
 #### Exponential Operator (`**`)
@@ -304,47 +288,45 @@ console.log(2 ** 3) // 8
 
 ### 🥰ES2017 (ES8)
 
-ES8 help us writing the asynchronous programming in the more convenient way by introducing the `async/await` that we could get rid of callback hell(introduce by normal callback function) and improve the code readability of promise.
+ES8 helps us to write the asynchronous functions in a more convenient way by introducing the keywords `async/await`. We can use these to avoid callback hell (a chain of dependant callback functions that can be very hard to debug) and improves the readability of Promises.
 
 #### Async Functions (async/await)
-example:
+
+With ES6 Promise handling we would write
 
 ```
-url = 'https://api.github.com/search/users?q=sambatlim'
-
-```
-with promise
-
-```
-fetch(url)
-  .then(response => response.json())
+fetch('https://api.github.com/search/users?q=sambatlim')
+  .then(response => {
+    // callback 1
+    response.json()
+  )
   .then(result => {
+    // callback 2
     console.log(result)
   })
 ```
 
-with async/await (can be used only with async function)
+With ES2017 we can declare an overall function as `async`, and then explicilty use `await` within it to resolve Promise values without blocking the whole Javascript runtime, but maintaining the normal way to write and read a Javascript function.
 
 ```
 async function getgithubprofile(){
-    const response = await fetch(url)
-    const result = await response.json()
+    const response = await fetch('https://api.github.com/search/users?q=sambatlim') // response isn't assigned until fetch returns
+    const result = await response.json() // result is not assigned until response is declared and json() returns a value
     console.log(result)
 }
-
 ```
 
-recommend to read more here: [article by javascript info](https://javascript.info/async-await).
+recommend to read more here: [article by Javascript info](https://Javascript.info/async-await).
 
 ---
 
 ### 🥺ES2018 (ES9)
 
-In this update, ES9 introduced no thing new but increasing the ability of Rest/Spread Properties (`...`) that was introduced since ES6.
+In this update, ES2018 introduced nothing new but increased the ability of the Rest and Spread Operators (`...`) that were introduced in ES6. Again, the original Object is unaltered.
 
-#### Rest Properties
+#### Rest Operator for Objects
 
-Now we can use `Rest Properties` with object.
+Now we can use rest on the properties of an Object. It allows us to explicitly extract certain named variables, and assign any uncalled variables into a catchall Object.
 
 ```
 const options = {
@@ -352,46 +334,41 @@ const options = {
   text: 'Hello',
   color: 'red'
 }
-
 const { enabled, ...others } = options
 
 console.log(enabled) // true
 console.log(others)  // { text: 'Hello', color: 'red' }
-
 ```
-#### Spread Properties
+#### Spread Operator for Objects
+
+Using the spread operator during an Object declaration will assign the properties of the referenced Object to the new Object.
 
 ```
 const moreOptions = {
   text: 'Hello',
   color: 'red'
 }
-
 const options = { enabled: true, ...moreOptions }
 
 console.log(options) // { enabled: true, text: 'Hello', color: 'red' }
-
 ```
 
 ---
 
 ### 🥰ES2019 (ES10)
 
-This update help developer get rid of the `e` error parameter that has been catch by the promise.
+An update for developer convience allows the use of `try/catch` without an explicit `e` Error reference in the `catch` call.
 
 ```
 // Before
-
 try {
   fetch('https://example.com')
 } catch (e) {
   console.log(`e`)
 }
 ```
-
 ```
 // After
-
 try {
   fetch('https://example.com')
 } catch {
@@ -403,7 +380,7 @@ try {
 
 ### 🔥ES2020 (ES11)
 
-ES2020 introduced some brand new features as below:
+ES2020 introduced:
 
 - Dynamic Import
 - BigInt
@@ -412,9 +389,8 @@ ES2020 introduced some brand new features as below:
 
 #### Dynamic Import
 
-In ES6 when we want to import we need to `import` at the beginning of the file (`static import`) and cannot add the condition to it.
-For Dynamic import we can easily assign what module that we need to import so that we no need to import all module at the same time (`import on demand`)
-which is very useful for big application that has a lot of module to import.
+In ES6 when we want to import references we need to write `import` at the beginning of the file. This is a static import and it cannot be conditional.
+With dynamic imports we can easily assign what modules we need to import on demand, which is very useful for big applications that can have a lot of modules.
 
 ```
 let stageId = 'A'
@@ -427,62 +403,53 @@ if (stageId === 'A') {
 }
 
 stage.run()
-
 ```
 
 read more at: [v8.dev](https://v8.dev/features/dynamic-import).
 
 #### BigInt
 
-bigint can store the number larger than 2<sup>53</sup> - 1.
-
-To create the bigint you just simply add `n` at the last of the number.
+BigInt is a Javascript data type that can store numbers larger than 2<sup>53</sup> - 1. To create a BigInt you append an `n` to the actual number.
 
 ```
 const big = 123456789n
 ```
 
-or convert to bigint by adding `BigInt(yournumber)`.
+or convert to a BigInt by calling `BigInt(yourNumber)`.
 
 ```
 const alsoBig = BigInt(20)
 ```
 
-`Warning` the operator `+`,`-`,`*`,`/` can only used with the number that has the same type of BigInt.
+**Warning**: The operators `+`, `-`, `*`, `/` can only be used on combinations of BigInt variables.
 
 #### Nullish Coalescing Operator (??)
 
-Before introduce you the `Nullish Coalescing Operator` let talk the way you write code to check whether the value of `score` for example exist or not `null` or `undefined` you usually write as below:
+Before introducing you to the Nullish Coalescing Operator, lets talk about the way you write code to check for `null` or `undefined` values. If we wanted to check the value of `score` for example, you would usually write:
 
 ```
 let score = null
 
-console.log(score || 'No score')
-//this code will print 'No score'
-```
-The problem with this is it will check `0` `Nan` as the false value as well.
-
-```
-let score = 0
-
-console.log(score || 'No score')
-// this will print 'No score' instead of 0;
+console.log(score || 'No score')  //this code will print 'No score'
 ```
 
-This is the reason `??` come to help.
-
+The problem with this is it will check not only for undeclared values like `null` or `undefined`, but for **"falsy"** values like Boolean `false`, `0`, `""` (empty string), or `NaN` (Not a Number) and treat them as empty values as well:
 ```
 let score = 0
 
-console.log(score ?? 'No score')
-
-//will print 0;
+console.log(score || 'No score')  // this will print 'No score' instead of 0;
 ```
 
+The introduction of the nullish coalescing operator `??` has come to help! It will evaluate the left hand argument strictly for `null` or `undefined`, allowing "falsy" values to be returned.
+```
+let score = 0
+
+console.log(score ?? 'No score') //will print 0;
+```
 
 #### Optional Chaining (?.)
 
-let imagine you have nested object. (objects inside object) example:
+Let's imagine you have an Object nested within another Object:
 
 ```
     const student ={
@@ -493,21 +460,22 @@ let imagine you have nested object. (objects inside object) example:
         }
     }
 ```
-if you want to get name of school name of student you might do something like this `student.profile.school.name`.
-what if `student` doesn't exist?
-You might error like below:
+If you want to get the `name` property of the `student`'s `school` property, you would normally use `student.profile.school.name`. But what if `student.profile` hasn't been declared? You would get an error:
 ```
 Uncaught TypeError: Cannot read property 'school' of undefined
 ```
-
-so to get rid of the error you can write like this:
-`student.profile && student.profile.school.name` long right?
-so with `Optional Chaining (?.)` you can write as below:
+So to prevent that error you could add an IF statement that checked for the existence of `student.profile` before trying to reference its properties, so that it returns before erroring out if `profile` is undefined:
+```
+if(student.profile && student.profile.school.name) {
+  return student.profile.school.name;
+}
+```
+But that is long, and you should really check each level of property. Using the optional chaining syntax `?.` on the `profile` property you can write the equivalent line:
 ```
 student.profile?.school.name
 ```
-This method will filter out the error that caused by `null` or `undefined`.
+This will prevent the error caused by an undeclared Object property.
 
 ---
 
-🎉🎉This is it of what new? in javascript see you next year....🎉🎉
+🎉🎉That's all for **What's New in Javascript**! See you next year...🎉🎉
