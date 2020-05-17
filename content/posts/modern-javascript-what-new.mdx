@@ -4,24 +4,24 @@ date: 2020-05-16
 ---
   <image src='https://i.imgur.com/2GZBAEo.jpg'/>
 
-  If I need to choose only one programming language to master, Javascript would be my choice. With Javascript we are able to create everything from web applications, mobile apps, and server-side applications, even desktop application using electron.js. I think this should convince you to learn Javascript! In order to get started with Javascript you should know some of its history - that's what this blog is for.
-At the time I write this blog post, Javascript has released its 😍ES11(2020)😍 already.
+  If I needed to choose only one programming language to master, Javascript would be my choice. With Javascript we are able to create everything from web applications, mobile apps, and server-side applications, even desktop applications using Electron.js. I think this should convince you to learn Javascript! In order to get started with Javascript you should know some of its history - that's what this blog is for.
+At the time I write this blog post, Javascript is on version 😍ES2020 (ES11)😍 already (ES is short for EcmaScript, the technical name for Javascript).
 
-### Below is a brief overview of what is new in all ES versions (<q>click on the list below to jump to its section</q>):
+### A brief overview of what is new in all ES versions:
 <ul>
     <li><a href='#es2015-es6'>ES2015 (ES6)</a></li>
-    <li><a href='#🥰es2017-es8'>ES2016 (ES7)</a></li>
-    <li><a href='#🥰es2017-es8'>ES2017 (ES8)</a></li>
-    <li><a href='#🥰es2019-es10'>ES2018 (ES9)</a></li>
-    <li><a href='#🥰es2019-es10'>ES2019 (ES10)</a></li>
+    <li><a href='#es2016-es7'>ES2016 (ES7)</a></li>
+    <li><a href='#es2017-es8'>ES2017 (ES8)</a></li>
+    <li><a href='#es2019-es10'>ES2018 (ES9)</a></li>
+    <li><a href='#es2019-es10'>ES2019 (ES10)</a></li>
     <li><a href='#es2020-es11'>ES2020 (ES11)</a></li>
 </ul>
 
 ---
 
-### 💪ES2015 (ES6)
+### ES2015 (ES6)
 
-In 2015, Javascript was back in the game after it had been ignored by most serious programmers ([**Why is Javascript bad?** discussion on quora](https://www.quora.com/Is-JavaScript-really-a-bad-language)).
+In 2015, Javascript was back in the game after it had been ignored by most serious programmers (see the [**Why is Javascript bad?** discussion on quora](https://www.quora.com/Is-JavaScript-really-a-bad-language)).
 2015 was the golden year of Javascript and had its biggest update of all time.
 
 These are the main updates of ES2015:
@@ -49,9 +49,9 @@ const message = 'hello';
 message ='good bye'; // returns an error because the value of the Constant message cannot be changed
 ```
 
-#### Arrow function
+#### Arrow functions
 
-With the old way, we write would write functions as below:
+With the old way, we would write functions as below:
 ```
 function sum(value1, value2){
     return value1 + value2;
@@ -64,7 +64,7 @@ const sum = (value1, value2)=>{
     return value1 + value2;
 }
 ```
-The syntax `()=>{}` is called an arrow function and the constant `sum` is declared to store it. This is also an example of an `anonymous function` because it has no explicit name, but is immediately assigned to a variable.
+The arrow syntax `()=>{}` creates a function and the constant `sum` is declared to store it. This is also an example of an `anonymous function` because it has no explicit name, but is immediately assigned to a variable.
 
 We can use an even more simple syntax if the operation we are performing immediately returns a value:
 
@@ -76,6 +76,7 @@ const sum = (value1, value2) => value1 + value2
 
 In ES6 we are able to write Javascript in with Object Oriented Programming (OOP) principles.
 
+For example, we create new class called `Calculator` (convention encourages the use of a capital letter when creating a class, but it isn't required). The Calculator class constructor is called whenever the `new` keyword is used to make an instance of the class, and expects one parameter called `moneyBeforeDiscount`.
 ```
 class Calculator{
     constructor(moneyBeforeDiscount){
@@ -86,17 +87,14 @@ class Calculator{
     }
 }
 ```
-> We create new class called `Calculator` (convention encourages the use of a capital letter when creating a class, but it isn't required).
-The Calculator class constructor is called whenever the `new` keyword is used to make an instance of the class, and expects one parameter called `moneyBeforeDiscount`.
 
+We instantiate the `Calculator` class to a variable called `bill` and call one of its method to print out the total after discount.
 ```
 const bill = new Calculator(5000);
 console.log('Total after discount :' + bill.moneyAfterDiscount(5));
 ```
-> We instantiate the object of the `Calculator` called `bill` and we need to print out the total after discount.
 
-We can also use class inheritance with keyword `extend` and reference back to parent class with the keyword `super`.
-
+We can also use class inheritance with the keyword `extend` and reference back to parent class with the keyword `super`.
 ```
 class MoreCalculate extend Calculator{
     constructor(moneyBeforeDiscount,discountRate,moneyExchange){
@@ -116,7 +114,7 @@ class MoreCalculate extend Calculator{
 Before ES6, Javascript didn't support module management natively. In ES6 though, we can `export` functions and variables from a file, and then `import` those elements in a different file.
 
 ```
-// MathLib.js
+// calculator.js
 const add = (a, b) => a + b
 const multiply = (a, b) => a * b
 
@@ -132,7 +130,7 @@ console.log(add(2, 3)); //5
 
 #### Template Strings
 
-Template strings replace repetative `+` string operations to concatenate reuglar strings and variables as well as allow multiline string variables. In order to interpolate variables inline just wrap the variable name in `${}`:
+Declaring strings is often done on one line using either single quotes `'` or double quotes `"`. The backtick character \` allows us to create template strings and replace repetative `+` string operations to concatenate regular strings and variables as well as allow multiline string variables. In order to interpolate variables inline just wrap the variable name in `${}`:
 
 ```
 const sum = 2+5;
@@ -142,14 +140,15 @@ console.log(`2 + 5 = ${sum}`);
 console.log('2 + 5 ='+ sum);
 ```
 
+You can also call functions and perform operations inside the template wrapper:
 ```
 const message = 'khmer  coder';
 console.log(`good morning, ${message} and ${2+2}`);
 //good morning, khmer coder and 4;
 ```
-#### Default function parameters
+#### Default function parameter values
 
-ES6 also includes the ability to set a `default parameter` which allows developers to set a fallback value if a function is called without necessary parameters.
+ES6 also includes the ability to set a default parameter value which allows developers to set a fallback value if a function is called without necessary parameters.
 
 ```
 const greeting = (name, message = 'Hello') => console.log(`${message}, ${name}`);
@@ -267,7 +266,7 @@ console.log(JSON.stringify(three));
 
 ---
 
-### 🥺ES2016 (ES7)
+### ES2016 (ES7)
 
 ES2016 introduced the minor update from the ES6 such as the Array method `.includes()` to check for the presence of a value, and an exponential operator `**`.
 
@@ -286,7 +285,7 @@ console.log(2 ** 3) // 8
 
 ---
 
-### 🥰ES2017 (ES8)
+### ES2017 (ES8)
 
 ES8 helps us to write the asynchronous functions in a more convenient way by introducing the keywords `async/await`. We can use these to avoid callback hell (a chain of dependant callback functions that can be very hard to debug) and improves the readability of Promises.
 
@@ -320,7 +319,7 @@ recommend to read more here: [article by Javascript info](https://Javascript.inf
 
 ---
 
-### 🥺ES2018 (ES9)
+### ES2018 (ES9)
 
 In this update, ES2018 introduced nothing new but increased the ability of the Rest and Spread Operators (`...`) that were introduced in ES6. Again, the original Object is unaltered.
 
