@@ -40,11 +40,11 @@ These are the main updates of ES2015:
 
 `let` and `const` variable declarations were introduced. It is highly recommended to use them over `var` to be explicit about the nature of the variable.
 
-``` 
+```jsx 
 let message = 'hello';
 message = 'good bye'; // works just fine because let declares variables that can be altered
 ```
-```
+```jsx
 const message = 'hello';
 message ='good bye'; // returns an error because the value of the Constant message cannot be changed
 ```
@@ -52,14 +52,14 @@ message ='good bye'; // returns an error because the value of the Constant messa
 #### Arrow functions
 
 With the old way, we would write functions as below:
-```
+```jsx
 function sum(value1, value2){
     return value1 + value2;
 }
 ```
 But with arrow function we can write in a compressed way, like this:
 
-```
+```jsx
 const sum = (value1, value2)=>{
     return value1 + value2;
 }
@@ -68,7 +68,7 @@ The arrow syntax `()=>{}` creates a function and the constant `sum` is declared 
 
 We can use an even more simple syntax if the operation we are performing immediately returns a value:
 
-```
+```jsx
 const sum = (value1, value2) => value1 + value2
 ```
 
@@ -77,7 +77,7 @@ const sum = (value1, value2) => value1 + value2
 In ES6 we are able to write Javascript in with Object Oriented Programming (OOP) principles.
 
 For example, we create new class called `Calculator` (convention encourages the use of a capital letter when creating a class, but it isn't required). The Calculator class constructor is called whenever the `new` keyword is used to make an instance of the class, and expects one parameter called `moneyBeforeDiscount`.
-```
+```jsx
 class Calculator{
     constructor(moneyBeforeDiscount){
         this.moneyBeforeDiscount = moneyBeforeDiscount;
@@ -89,13 +89,13 @@ class Calculator{
 ```
 
 We instantiate the `Calculator` class to a variable called `bill` and call one of its method to print out the total after discount.
-```
+```jsx
 const bill = new Calculator(5000);
 console.log('Total after discount :' + bill.moneyAfterDiscount(5));
 ```
 
 We can also use class inheritance with the keyword `extend` and reference back to parent class with the keyword `super`.
-```
+```jsx
 class MoreCalculate extend Calculator{
     constructor(moneyBeforeDiscount,discountRate,moneyExchange){
         super(moneyBeforeDiscount);
@@ -113,7 +113,7 @@ class MoreCalculate extend Calculator{
 
 Before ES6, Javascript didn't support module management natively. In ES6 though, we can `export` functions and variables from a file, and then `import` those elements in a different file.
 
-```
+```jsx
 // calculator.js
 const add = (a, b) => a + b
 const multiply = (a, b) => a * b
@@ -121,7 +121,7 @@ const multiply = (a, b) => a * b
 export { add, multiply }
 ```
 
-```
+```jsx
 // App.js
 import { add } from './calculator'
 
@@ -132,7 +132,7 @@ console.log(add(2, 3)); //5
 
 Declaring strings is often done on one line using either single quotes `'` or double quotes `"`. The backtick character \` allows us to create template strings and replace repetative `+` string operations to concatenate regular strings and variables as well as allow multiline string variables. In order to interpolate variables inline just wrap the variable name in `${}`:
 
-```
+```jsx
 const sum = 2+5;
 console.log(`2 + 5 = ${sum}`);
 
@@ -141,7 +141,7 @@ console.log('2 + 5 ='+ sum);
 ```
 
 You can also call functions and perform operations inside the template wrapper:
-```
+```jsx
 const message = 'khmer  coder';
 console.log(`good morning, ${message} and ${2+2}`);
 //good morning, khmer coder and 4;
@@ -150,7 +150,7 @@ console.log(`good morning, ${message} and ${2+2}`);
 
 ES6 also includes the ability to set a default parameter value which allows developers to set a fallback value if a function is called without necessary parameters.
 
-```
+```jsx
 const greeting = (name, message = 'Hello') => console.log(`${message}, ${name}`);
 greeting('Sambat'); // "Hello, Sambat"
 greeting('khmer coder','Hi'); // "Hi, khmer coder"
@@ -160,7 +160,7 @@ greeting('khmer coder','Hi'); // "Hi, khmer coder"
 
 The Rest Operator (*not related to REST API models*) is used when there is an unknown or unlimited number of parameters in calling a function. By declaring `...` before a variable name in a function definition it will create an iterable variable of any length:
 
-```
+```jsx
 function add(...numbers) {
   sum = 0
   for(const n of numbers) {
@@ -174,7 +174,7 @@ console.log(add(1, 2, 3)) // 6
 
 The Spread Operator is used to "spread out" an array by returning the individual values in order by entering `...` before a variable. One use of this is to insert one array into the center of another, like:
 
-```
+```jsx
 const a = [4, 5, 6]
 const b = [1, 2, 3, ...a, 7] // [1, 2, 3, 4, 5, 6, 7]
 ```
@@ -185,7 +185,7 @@ Array and Object Destructuring are used when we want to assign the value of vari
 
 Array destructuring uses the order of the array to return a value and assigns it to the variable in the same position on the left side of the assignment operator.
 
-```
+```jsx
 const studentScore = [50, 25, 79]
 const [first, second] = studentScore
 
@@ -194,7 +194,7 @@ console.log(first, second) // 50, 25
 
 Object destructuring matches the variable names matched to the Object's properties to perform the assignment.
 
-```
+```jsx
 const studentA = {
   name: 'A',
   score: 99
@@ -208,7 +208,7 @@ console.log(`${name}: ${score}`) // A: 99
 
 Promises are widely used in asynchronous programming to handle HTTP requests and other long running processes. Promises return a result with to a function declared with the `.then` method, and `.then`s can be chained to perform multiple process steps. Error handling is done with the `.catch` method calling its own function. All Promise handler functions can be declared anonymously inline.
 
-```
+```jsx
 url = 'https://api.github.com/search/users?q=sambatlim'
 
 fetch(url)
@@ -223,7 +223,7 @@ fetch(url)
 
 Iterators:<br/>
 ES6 provided the new looping syntax `for x of y`, which is similar to `foreach` in most programming languages.
-```
+```jsx
 let arr= [a,b,c];
 for(let value of arr){
   console.log(value);
@@ -239,7 +239,7 @@ To get a value we need to use the generator method `next()`. `next()` will alway
 
 When It reached the `return` statement, the function will finish and return `done`:`true`. 
 
-```
+```jsx
 function* generateSequence() {
   yield 1;
   yield 2;
@@ -271,7 +271,7 @@ console.log(JSON.stringify(three));
 ES2016 introduced the minor update from the ES6 such as the Array method `.includes()` to check for the presence of a value, and an exponential operator `**`.
 
 #### Array.includes()
-```
+```jsx
 const number = [1,2,3]
 console.log(number.includes(1)); //true
 console.log(number.includes(7)); //false
@@ -279,7 +279,7 @@ console.log(number.includes(7)); //false
 
 #### Exponential Operator (`**`)
 
-```
+```jsx
 console.log(2 ** 3) // 8
 ```
 
@@ -293,7 +293,7 @@ ES8 helps us to write the asynchronous functions in a more convenient way by int
 
 With ES6 Promise handling we would write
 
-```
+```jsx
 fetch('https://api.github.com/search/users?q=sambatlim')
   .then(response => {
     // callback 1
@@ -307,7 +307,7 @@ fetch('https://api.github.com/search/users?q=sambatlim')
 
 With ES2017 we can declare an overall function as `async`, and then explicilty use `await` within it to resolve Promise values without blocking the whole Javascript runtime, but maintaining the normal way to write and read a Javascript function.
 
-```
+```jsx
 async function getgithubprofile(){
     const response = await fetch('https://api.github.com/search/users?q=sambatlim') // response isn't assigned until fetch returns
     const result = await response.json() // result is not assigned until response is declared and json() returns a value
@@ -327,7 +327,7 @@ In this update, ES2018 introduced nothing new but increased the ability of the R
 
 Now we can use rest on the properties of an Object. It allows us to explicitly extract certain named variables, and assign any uncalled variables into a catchall Object.
 
-```
+```jsx
 const options = {
   enabled: true,
   text: 'Hello',
@@ -342,7 +342,7 @@ console.log(others)  // { text: 'Hello', color: 'red' }
 
 Using the spread operator during an Object declaration will assign the properties of the referenced Object to the new Object.
 
-```
+```jsx
 const moreOptions = {
   text: 'Hello',
   color: 'red'
@@ -358,7 +358,7 @@ console.log(options) // { enabled: true, text: 'Hello', color: 'red' }
 
 An update for developer convience allows the use of `try/catch` without an explicit `e` Error reference in the `catch` call.
 
-```
+```jsx
 // Before
 try {
   fetch('https://example.com')
@@ -366,7 +366,7 @@ try {
   console.log(`e`)
 }
 ```
-```
+```jsx
 // After
 try {
   fetch('https://example.com')
@@ -391,7 +391,7 @@ ES2020 introduced:
 In ES6 when we want to import references we need to write `import` at the beginning of the file. This is a static import and it cannot be conditional.
 With dynamic imports we can easily assign what modules we need to import on demand, which is very useful for big applications that can have a lot of modules.
 
-```
+```jsx
 let stageId = 'A'
 let stage
 
@@ -410,13 +410,13 @@ read more at: [v8.dev](https://v8.dev/features/dynamic-import).
 
 BigInt is a Javascript data type that can store numbers larger than 2<sup>53</sup> - 1. To create a BigInt you append an `n` to the actual number.
 
-```
+```jsx
 const big = 123456789n
 ```
 
 or convert to a BigInt by calling `BigInt(yourNumber)`.
 
-```
+```jsx
 const alsoBig = BigInt(20)
 ```
 
@@ -426,21 +426,21 @@ const alsoBig = BigInt(20)
 
 Before introducing you to the Nullish Coalescing Operator, lets talk about the way you write code to check for `null` or `undefined` values. If we wanted to check the value of `score` for example, you would usually write:
 
-```
+```jsx
 let score = null
 
 console.log(score || 'No score')  //this code will print 'No score'
 ```
 
 The problem with this is it will check not only for undeclared values like `null` or `undefined`, but for **"falsy"** values like Boolean `false`, `0`, `""` (empty string), or `NaN` (Not a Number) and treat them as empty values as well:
-```
+```jsx
 let score = 0
 
 console.log(score || 'No score')  // this will print 'No score' instead of 0;
 ```
 
 The introduction of the nullish coalescing operator `??` has come to help! It will evaluate the left hand argument strictly for `null` or `undefined`, allowing "falsy" values to be returned.
-```
+```jsx
 let score = 0
 
 console.log(score ?? 'No score') //will print 0;
@@ -450,7 +450,7 @@ console.log(score ?? 'No score') //will print 0;
 
 Let's imagine you have an Object nested within another Object:
 
-```
+```jsx
     const student ={
         profile:{
             school:{
@@ -460,17 +460,17 @@ Let's imagine you have an Object nested within another Object:
     }
 ```
 If you want to get the `name` property of the `student`'s `school` property, you would normally use `student.profile.school.name`. But what if `student.profile` hasn't been declared? You would get an error:
-```
+```jsx
 Uncaught TypeError: Cannot read property 'school' of undefined
 ```
 So to prevent that error you could add an IF statement that checked for the existence of `student.profile` before trying to reference its properties, so that it returns before erroring out if `profile` is undefined:
-```
+```jsx
 if(student.profile && student.profile.school.name) {
   return student.profile.school.name;
 }
 ```
 But that is long, and you should really check each level of property. Using the optional chaining syntax `?.` on the `profile` property you can write the equivalent line:
-```
+```jsx
 student.profile?.school.name
 ```
 This will prevent the error caused by an undeclared Object property.
