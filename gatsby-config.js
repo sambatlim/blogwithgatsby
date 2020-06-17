@@ -1,15 +1,18 @@
 module.exports = {
   plugins: [
     {
+      resolve: `gatsby-plugin-gtag`,
+      options: {
+        trackingId: `UA-169757940-1`,
+        head: false,
+        anonymize: true,
+      },
+    },
+    {
       resolve: `gatsby-theme-blog`,
       options: {},
     },
-    {
-      resolve: `gatsby-plugin-google-analytics`,
-      options: {
-        trackingId: "UA-169757940-1",
-      },
-    },
+    
   ],
   // Customize your site metadata:
   siteMetadata: {
