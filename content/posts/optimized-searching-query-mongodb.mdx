@@ -1,0 +1,135 @@
+---
+title: Making your search query in mongodb a lot faster by creating index
+date: 2020-08-12
+---
+<image src='https://i.imgur.com/l5a6GSh.jpg'/>
+
+> ***TL-DR***:  if you face the searching performance issue in mongodb due to you have the huge collection, you should create index in your collection.
+
+MongoDB is easy and fast. However, when we have such the big data or huge collection (millions of records in the collection), it can be surprisingly slow for the search query performance.
+So, in order to perform the search query faster , we need to create index for our collection.
+
+It is very easy to create index but it always comes with the cost (it could slow down the update, insert , and delete performance) so you need to carefully choose what index you want to create.
+
+In order to create the good index, you need to list down all possible query that you are willing to perform in the future and create index according to your query. 
+For example: I have a history collection keep all user position (userId, timestamp, positionX, positionY, positionZ,floor, building), and I am going to find the position of the given user id, and also the given user id during this period of time on the specific floor.
+
+In the query, I want to find userid, timestamp, and floor which mean I need to create three indexes (userid, timestamp, and floor. This is called compound index) but if I don't care about timestamp, and floor, I can simply create only one index (userid. this is called single index).
+
+# Q&A
+
+> ***1. FAQ***: if I have a compound index (a,b,c), will I get the speedy performance by only querying with two parameters like {a,b} or {b,c} ?
+
+> ***Ans***: for {a,b} you will get the speedy performance. for {b,c} you will not get the speedy performance due to you have missed the first field {a}.
+
+> ***2. FAQ***: What create index does behind the scene?
+
+> ***Ans***: create index will create the lookup for the indexing fields and create B-tree data structure in the collection [More about B-tree](http://www.ovaistariq.net/733/understanding-btree-indexes-and-how-they-impact-performance). if you didn't create index, the database will search on every document which cause the slow performance.
+
+> ***3. FAQ***: Will create index affect the existing document?
+
+> ***Ans***: create index will not affect the existing document. And if you don't feel good with that index, you can easily drop it. 
+
+> ***4. FAQ***: Do I need to create index everytime when I perform the query?
+
+> ***Ans***: No, the database will handle it for us when you insert new document. We just did it once, but if your document have missed the index or the index is broken, you should re-index. 
+
+Below is the snippet code using mongodb node module. However, I suggest you to check out the [official document](https://docs.mongodb.com/manual/indexes/):
+
+```jsx
+
+var mongodb = require('mongodb');
+var MongoClient = mongodb.MongoClient;
+var url = 'mongodb://' + 'username' + ':' + 'password' + '@' + 'host' + ':' + 'port' + '/' + 'database name';
+
+
+function indexing(CollectionName){
+
+    this.createIndex = (indexToCreate , indexName)=>{
+
+        MongoClient.connect(url, {
+            useNewUrlParser: true
+        }, function (err, db) {
+            if (err) {
+                console.log(err);
+            } else {
+    
+                let dbo = db.db(config.nosql.db);
+                dbo.collection(CollectionName).createIndex(indexToCreate , indexName, (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(result);
+                    }
+                })
+            }
+        });
+
+    };
+
+    this.dropIndex = (indexName) => {
+        MongoClient.connect(url, {
+            useNewUrlParser: true
+        }, function (err, db) {
+            if (err) {
+                console.log(err);
+            } else {
+    
+                let dbo = db.db(config.nosql.db);
+                dbo.collection(CollectionName).dropIndex(indexName,(err,result)=>{
+                        if(err){
+                            console.log(err);
+                        }else{
+                            console.log(result);
+                        }
+                });
+            }
+        });
+    };
+
+    this.getIndex = () => {
+        MongoClient.connect(url, {
+            useNewUrlParser: true
+        }, async function (err, db) {
+            if (err) {
+                console.log(err);
+            } else {
+    
+                let dbo = db.db(config.nosql.db);
+                let result = await dbo.collection(CollectionName).indexes();
+                console.log(result);
+            }
+        });
+    }
+
+
+
+
+}
+
+//////////////  USAGE EXAMPLE   //////////////
+
+/// instantiate the function by given one parameter(collection name). this example 'log_history' is the collection name ///
+//  let indexing = new indexing('log_history');
+
+/// to create index we need to provide the index you want to create and name of the index in the object format ///
+// indexing.createIndex({ timestamp:-1 , id:1},{name : 'yourIndexName'});
+
+
+/// to drop index we need to provide the index name///
+// indexing.dropIndex('yourIndexName');
+
+
+/// to get all the index in the collection///
+// indexing.getIndex();
+
+
+```
+
+Useful resources:
+1. [How can we create index in mongodb discuss on github](https://stackoverflow.com/questions/50301130/how-we-can-create-an-index-on-mongodb)
+2. [What are pros and cons of creating indexes in MongoDB? discuss on Quora](https://www.quora.com/What-are-pros-and-cons-of-creating-indexes-in-MongoDB)
+
+---
+
+🎉🎉...The ends...🎉🎉
