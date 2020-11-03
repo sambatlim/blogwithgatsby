@@ -7,9 +7,9 @@ import illustration from "../../content/assets/404_illustration.png";
 export default () => (
     <div>
 
-    <div style={{ maxHeight:"95vh", minWidth:"90vw", display:"flex", justifyContent:"center",alignItems:"center", overflow:"hidden"}}>
+    <div style={{ maxHeight:"90vh", minWidth:"90vw", display:"flex", justifyContent:"center",alignItems:"center", overflow:"hidden"}}>
         
-        <img src={illustration} alt="404" style={{pointerEvents: "none", maxwidth:"400px", height:"auto"}}></img>
+        <img src={illustration} alt="404" style={{pointerEvents: "none", maxwidth:"350px", height:"auto"}}></img>
     </div>
 
     <div style={{display:"flex",alignContent:"center",justifyContent:"center"}}>
