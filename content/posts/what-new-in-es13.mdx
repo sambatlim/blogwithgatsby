@@ -1,0 +1,363 @@
+---
+title: What new in ES2021 (aka ES13)?
+date: 2022-04-29
+---
+<image src='../assets/es2021.jpg'/>
+
+<br/>
+
+If you missed out 'what new in the previous version of javascript?', you can check here [es6 - es11](/modern-javascript-what-new),and [es12](/what-new-in-es12).
+
+Every year, javascript got the new update. ECMAScript 2022(ES2022) version is expected to be released soon. 
+
+List down below is some new updates of ES2022 (aka ES13) that have been proposed in ECMAScript proposal (final stage):
+
+<ul>
+    <li><a href='#string-replaceall-method'>Class field declarations</a></li>
+    <li><a href='#private-methods'>Private Methods and fields</a></li>
+    <li><a href='#private-accessors'>Static public methods and fields</a></li>
+    <li><a href='#logical-operators-and-assignment-expressions'>Regexp Match Indices</a></li>
+    <li><a href='#weakref-and-finalizers'>Top-level await</a></li>
+    <li><a href='#promiseany-and-aggregateerror'>Ergonomic brand checks for Private Fields</a></li>
+    <li><a href='#numeric-separators'>New .at() method on all the built-in indexables</a></li>
+    <li><a href='#intllistformat'>Object Accessible Object.prototype.hasOwnProperty()</a></li>
+    <li><a href='#datestyle-and-timestyle-options-for-intldatetimeformat'> ECMAScript class static initialization blocks </a></li>
+</ul>
+
+Credit:
+1. [Brandon Lara article on medium](https://medium.com/geekculture/proposals-included-in-the-incoming-ecmascript-2022-standard-for-javascript-6119a4518904)
+2. [ECMAScript proposal](https://github.com/tc39/proposals/blob/main/finished-proposals.md)
+
+---
+
+### Class field declarations
+
+With this new update, we are able to replaceAll the string with the new string using ``` string.replaceAll() ``` method.
+
+>Old approach
+
+```jsx
+// in the previous version
+let string = 'The dog is eating dogfood.';
+let newString = string.replace('dog','cat');
+console.log(newString); 
+// output: The cat is eating dogfood.
+```
+```jsx
+// To replace all the word dog with cat, we need to use regular expression.
+let string = 'The dog is eating dogfood.';
+let newString = string.replace(/dog/g,'cat');
+console.log(newString); 
+// output: The cat is eating catfood.
+```
+> New approach
+
+```jsx
+// with the new update, we can use method replaceAll()
+let string = 'The dog is eating dogfood.';
+let newString = string.replaceAll('dog','cat');
+console.log(newString); 
+// output: The cat is eating catfood.
+
+```
+---
+### Private Methods and fields
+Private method is accessible only in its own class. Private method start with ``` # ```.
+
+```jsx
+
+class Car {
+  // Private method
+  #carColor() {
+    console.log("The car is white.");
+  }
+  // Public method
+  showCarColor() {
+    this.#carColor();
+  }
+}
+const carObj = new Car();
+carObj.showCarColor(); // "The car is white.";
+carObj.carColor(); // TypeError: carObj.carColor is not a function
+
+```
+---
+
+### Static public methods and fields
+Private Accessors function start with ``` # ```.
+
+```jsx
+class Car {
+  // Public accessor
+  get name() { return 'Honda' }
+  set name(value) {}
+
+  // Private accessor
+  get #color() { return 'red' }
+  set #color(value) {}
+}
+```
+We can access the Accessors as belows:
+
+```jsx
+const carObj = new Car();
+console.log(carObj.name); // "Honda"
+console.log(carObj.color); // undefined
+```
+---
+### Regexp Match Indices
+Logical assignment operator combines the logical operations(&&, || or ??) with assignment.
+
+>TL-DR
+
+```jsx
+let a = 1;
+let b = 2;
+a ||= b;
+// equivalent to a = a || b
+console.log(a); // output: 1
+```
+```jsx
+let c = 2;
+let d = 5;
+c &&= d;
+// equivalent to c = c && d
+console.log(c); // output: 5
+```
+```jsx
+let e;
+let f = 2;
+e ??= f;
+// equivalent to e = e ?? f
+console.log(e) // output: 2
+
+```
+Let's see the summarize below:
+
+- ``` a ||= b ``` will return ``` a ``` if ``` a ``` is ``` a ``` truthy value, or ``` b ``` if ``` a ``` is falsy
+- ``` c &&= d ``` will return ``` d ``` if both ``` c ``` and ``` d ``` are truthy, or ``` c ``` otherwise
+- ``` e ??= f ``` will return``` f ``` if ``` e ``` is ``` null ``` or  ``` undefined ``` otherwise it will return ``` e```
+
+[Read More](https://github.com/tc39/proposal-logical-assignment)
+
+---
+
+### Top-level await
+
+#### WeakRef
+
+```WeakRef``` stands for Weak References. Main use of weak references is to implement caches or mappings to large objects.
+For example: we don't want to keep a lot of memory for the rarely used cached or mapping so we can allow memory to be garbage collected and generate the fresh one if we need it.
+
+Read More about javascript garbage collection [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management).
+
+>TL-DR
+
+To create WeakRef we just simply use ```new WeakRef``` and to call the weakref we can use ``` .deref() ```.
+
+```jsx
+const callback = () => {
+
+  const aBigObj = new WeakRef({
+    name: "Backbencher"
+  });
+
+  console.log(aBigObj.deref().name);
+}
+
+(async function(){
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      callback(); // Guaranteed to print "Backbencher"
+      resolve();
+    }, 2000);
+  });
+
+  await new Promise((resolve) => {
+    setTimeout(() => {
+      callback(); // No Gaurantee that "Backbencher" is printed
+      resolve();
+    }, 5000);
+  });
+})();
+
+```
+As you can see the code above the second await cannot Gaurantee the word "Backbencher" is printed which means it is already garbage collected.
+
+Please make sure you use weakref only on the big obj that isn't so important for your program to run.
+
+#### Finalizers
+
+```FinalizationRegistry``` is a companion feature of ```WeakRef```. It lets programmers register callbacks to be invoked after an object is garbage collected.
+
+```jsx
+const registry = new FinalizationRegistry((value) => {
+  console.log(value);
+});
+```
+Here registry is an instance of FinalizationRegistry. The callback function passed to FinalizationRegistry gets triggered when an object is garbage collected.
+
+```jsx
+(function () {
+
+  const obj = {};
+
+  registry.register(obj, "Backbencher");
+  // this will passed the value "Backbencher" to registry when obj is garbage collected.
+  // and will print "Backbencher" as the output.
+})();
+```
+--- 
+
+### Ergonomic brand checks for Private Fields
+
+```Promise.any()``` resolves if any of the supplied promises is resolved. Below we have 3 promises, which resolves at random times.
+
+```jsx
+const p1 = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("A"), Math.floor(Math.random() * 1000));
+});
+const p2 = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("B"), Math.floor(Math.random() * 1000));
+});
+const p3 = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("C"), Math.floor(Math.random() * 1000));
+});
+```
+Out of ```p1```, ```p2``` and ```p3```, whichever resolves first is taken by ```Promise.any()```.
+
+```jsx
+(async function() {
+  const result = await Promise.any([p1, p2, p3]);
+  console.log(result); // Prints "A", "B" or "C"
+})();
+```
+
+What if none of the promises resolve? In that case ```Promise.any()``` throws an AggregateError exception. We need to catch it and handle it.
+
+```jsx
+const p = new Promise((resolve, reject) => reject());
+
+try {
+  (async function() {
+    const result = await Promise.any([p]);
+    console.log(result);
+  })();
+} catch(error) {
+  console.log(error.errors);
+}
+```
+
+[Read More](https://github.com/tc39/proposal-promise-any)
+
+---
+
+### New .at() method on all the built-in indexables
+
+The introduction of Numeric Separators will make it easier to read numeric values by using the _ (underscore) character to provide a separation between groups of digits.
+
+Let's look at more examples:
+
+```jsx
+1_000_000_000           // Ah, so a billion
+101_475_938.38          // And this is hundreds of millions
+
+let fee = 123_00;       // $123 (12300 cents, apparently)
+let fee = 12_300;       // $12,300 (woah, that fee!)
+let amount = 12345_00;  // 12,345 (1234500 cents, apparently)
+let amount = 123_4500;  // 123.45 (4-fixed financial)
+let amount = 1_234_500; // 1,234,500
+```
+
+[Read More](https://github.com/tc39/proposal-numeric-separator)
+
+---
+
+### Object Accessible Object.prototype.hasOwnProperty()
+
+The ```Intl.ListFormat``` object is a constructor for objects that enable language-sensitive list formatting.
+
+The following example shows how to create a formatted list using the English language.
+```jsx
+// Create a list formatter in your locale
+// with default values explicitly passed in.
+const lf = new Intl.ListFormat("en", {
+    localeMatcher: "best fit", // other values: "lookup"
+    type: "conjunction", // "conjunction", "disjunction" or "unit"
+    style: "long", // other values: "short" or "narrow"
+});
+
+lf.format(['Motorcycle', 'Truck' , 'Car']);
+// > "Motorcycle, Truck, and Car"
+```
+
+You are not limited to English, let's try with a few different languages:
+
+```jsx
+const list = ['Apple', 'Orange', 'Banana'];
+
+// Italian
+console.log(new Intl.ListFormat('it', { style: 'long', type: 'conjunction' }).format(list));
+// Apple, Orange e Banana
+
+// Spanish
+console.log(new Intl.ListFormat('es', { style: 'long', type: 'conjunction' }).format(list));
+// Apple, Orange y Banana
+
+// German
+console.log(new Intl.ListFormat('de', { style: 'long', type: 'conjunction' }).format(list));
+// Apple, Orange und Banana
+```
+[Read More](https://github.com/tc39/proposal-intl-list-format)
+
+---
+
+### ECMAScript class static initialization blocks 
+
+We can use ```dateStyle``` and ```timeStyle``` to request a ```locale-specific``` date and time of a given length.
+
+```jsx
+// short
+new Intl.DateTimeFormat("en" , {
+  timeStyle: "short"
+}).format(Date.now())
+// "2:45 PM"
+
+// medium
+new Intl.DateTimeFormat("en" , {
+  timeStyle: "medium"
+}).format(Date.now())
+// "2:45:53 PM"
+
+// long
+new Intl.DateTimeFormat("en" , {
+  timeStyle: "long"
+}).format(Date.now())
+// "2:46:05 PM GMT+7"
+```
+
+Now let's try with dateStyle:
+
+```jsx
+// short
+new Intl.DateTimeFormat("en" , {
+  dateStyle: "short"
+}).format(Date.now())
+// "7/25/20"
+
+// medium
+new Intl.DateTimeFormat("en" , {
+  dateStyle: "medium"
+}).format(Date.now())
+// "Jul 25, 2020"
+
+// long
+new Intl.DateTimeFormat("en" , {
+  dateStyle: "long"
+}).format(Date.now())
+// 
+```
+[Read More](https://github.com/tc39/proposal-intl-datetime-style)
+
+
+<p style="text-align:center">🎉🎉That's all for **What's New in Javascript ES2021**! See you next year...🎉🎉</p>
