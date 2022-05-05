@@ -13,72 +13,99 @@ Every year, javascript got the new update. ECMAScript 2022(ES2022) version is ex
 List down below is some new updates of ES2022 (aka ES13) that have been proposed in ECMAScript proposal (final stage):
 
 <ul>
-    <li><a href='#string-replaceall-method'>Class field declarations</a></li>
-    <li><a href='#private-methods'>Private Methods and fields</a></li>
-    <li><a href='#private-accessors'>Static public methods and fields</a></li>
-    <li><a href='#logical-operators-and-assignment-expressions'>Regexp Match Indices</a></li>
-    <li><a href='#weakref-and-finalizers'>Top-level await</a></li>
-    <li><a href='#promiseany-and-aggregateerror'>Ergonomic brand checks for Private Fields</a></li>
-    <li><a href='#numeric-separators'>New .at() method on all the built-in indexables</a></li>
-    <li><a href='#intllistformat'>Object Accessible Object.prototype.hasOwnProperty()</a></li>
-    <li><a href='#datestyle-and-timestyle-options-for-intldatetimeformat'> ECMAScript class static initialization blocks </a></li>
+    <li><a href='#class-field-declarations'>Class field declarations</a></li>
+    <li><a href='#private-methods-and-fields'>Private Methods and fields</a></li>
+    <li><a href='#static-public-methods-and-fields'>Static public methods and fields</a></li>
+    <li><a href='#regexp-match-indices'>Regexp Match Indices</a></li>
+    <li><a href='#top-level-await'>Top-level await</a></li>
+    <li><a href='#ergonomic-brand-checks-for-private-fields'>Ergonomic brand checks for Private Fields</a></li>
+    <li><a href='#new-at-method-on-all-the-built-in-indexables'>New .at() method on all the built-in indexables</a></li>
+    <li><a href='#object-accessible-objectprototypehasownproperty'>Object Accessible Object.prototype.hasOwnProperty()</a></li>
+    <li><a href='#ecmascript-class-static-initialization-blocks'> ECMAScript class static initialization blocks </a></li>
 </ul>
 
-Credit:
+Credits:
 1. [Brandon Lara article on medium](https://medium.com/geekculture/proposals-included-in-the-incoming-ecmascript-2022-standard-for-javascript-6119a4518904)
 2. [ECMAScript proposal](https://github.com/tc39/proposals/blob/main/finished-proposals.md)
+3. [Jasmin Virdi article on dev.to](https://dev.to/jasmin/whats-new-in-es2022-1de6)
 
 ---
 
 ### Class field declarations
 
-With this new update, we are able to replaceAll the string with the new string using ``` string.replaceAll() ``` method.
+In the previous version, in order to define and initialize the class field, we need to do it in side the ``` constructor method ```.
+With the new proposal we can easily define and initialize the class field at the top level of the class.
 
->Old approach
+>New approach
 
 ```jsx
-// in the previous version
-let string = 'The dog is eating dogfood.';
-let newString = string.replace('dog','cat');
-console.log(newString); 
-// output: The cat is eating dogfood.
+class Class{
+  instancePublicField = "This instance is predefined.";
+}
 ```
-```jsx
-// To replace all the word dog with cat, we need to use regular expression.
-let string = 'The dog is eating dogfood.';
-let newString = string.replace(/dog/g,'cat');
-console.log(newString); 
-// output: The cat is eating catfood.
-```
-> New approach
+> Old approach
 
 ```jsx
-// with the new update, we can use method replaceAll()
-let string = 'The dog is eating dogfood.';
-let newString = string.replaceAll('dog','cat');
-console.log(newString); 
-// output: The cat is eating catfood.
+class PublicClass{
+  constructor(value){
+    this.instancePublicField = "This instance is predefined.";
+    this.value = value;
+  }
+}
 
 ```
 ---
 ### Private Methods and fields
-Private method is accessible only in its own class. Private method start with ``` # ```.
+Private method and field can be created with prefix ``` # ```. Private Methods and Fields are only accessible inside its own class.
+
+> Example
 
 ```jsx
 
 class Car {
-  // Private method
-  #carColor() {
-    console.log("The car is white.");
-  }
-  // Public method
-  showCarColor() {
-    this.#carColor();
-  }
+    #numberOfWheel = 4; // private field
+    #carColor; //required
+    static #staticPrivateField = "I am staticPrivateField."
+    constructor(value){
+      this.#carColor = value;
+    }
+
+    // this private method can access to private field 
+    // cannot access the static private field
+    #returnMyCar(){
+      return `Your car is ${this.#carColor} and has ${this.#numberOfWheel} wheels.`
+    }
+
+    // public method can access the private method
+    // cannot access static private method
+    // and be accessed from the outside
+    returnMyStringCar(){
+      return this.#returnMyCar()
+    }
+
+    // static private method cannot access private field but can
+    // access the private static field
+    static #privateMethodCar(){
+      return this.#staticPrivateField;
+    }
+
+    // static public method can access the static private method 
+    // cannot access the private method
+    // and be accessed from the outside
+    static publicMethodCar(){
+      return this.#privateMethodCar()
+    }
 }
-const carObj = new Car();
-carObj.showCarColor(); // "The car is white.";
-carObj.carColor(); // TypeError: carObj.carColor is not a function
+const myCar = new Car('red');
+
+myCar.carColor; // will return undefined;
+myCar.#carColor; //Error: Private field '#carColor' must be declared in an enclosing class
+
+Car.privateMethodCar(); //Error: myCar.privateMethodReturnCar is not a function
+Car.#privateMethodCar(); //Error: Private field '#privateMethodReturnCar' must be declared in an enclosing class
+Car.publicMethodCar(); //Will return 'I am staticPrivateField.'
+
+myCar.returnMyStringCar(); //will return 'Your car is red and has 4 wheels.'
 
 ```
 ---
