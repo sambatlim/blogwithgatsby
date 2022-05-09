@@ -1,8 +1,8 @@
 ---
-title: What new in ES2021 (aka ES13)?
-date: 2022-04-29
+title: What new in ES2022 (aka ES13)?
+date: 2022-05-09
 ---
-<image src='../assets/es2021.jpg'/>
+<image src='../assets/es2022.jpg'/>
 
 <br/>
 
@@ -14,14 +14,12 @@ List down below is some new updates of ES2022 (aka ES13) that have been proposed
 
 <ul>
     <li><a href='#class-field-declarations'>Class field declarations</a></li>
-    <li><a href='#private-methods-and-fields'>Private Methods and fields</a></li>
+    <li><a href='#privatestatic-methods-and-fields'>Private,static Methods and fields</a></li>
     <li><a href='#static-public-methods-and-fields'>Static public methods and fields</a></li>
     <li><a href='#regexp-match-indices'>Regexp Match Indices</a></li>
     <li><a href='#top-level-await'>Top-level await</a></li>
-    <li><a href='#ergonomic-brand-checks-for-private-fields'>Ergonomic brand checks for Private Fields</a></li>
     <li><a href='#new-at-method-on-all-the-built-in-indexables'>New .at() method on all the built-in indexables</a></li>
     <li><a href='#object-accessible-objectprototypehasownproperty'>Object Accessible Object.prototype.hasOwnProperty()</a></li>
-    <li><a href='#ecmascript-class-static-initialization-blocks'> ECMAScript class static initialization blocks </a></li>
 </ul>
 
 Credits:
@@ -55,7 +53,7 @@ class PublicClass{
 
 ```
 ---
-### Private Methods and fields
+### Private,static Methods and fields
 Private method and field can be created with prefix ``` # ```. Private Methods and Fields are only accessible inside its own class.
 
 > Example
@@ -78,7 +76,7 @@ class Car {
 
     // public method can access the private method
     // cannot access static private method
-    // and be accessed from the outside
+    // and can be accessed from the outside
     returnMyStringCar(){
       return this.#returnMyCar()
     }
@@ -91,7 +89,7 @@ class Car {
 
     // static public method can access the static private method 
     // cannot access the private method
-    // and be accessed from the outside
+    // and can be accessed from the outside
     static publicMethodCar(){
       return this.#privateMethodCar()
     }
@@ -111,280 +109,116 @@ myCar.returnMyStringCar(); //will return 'Your car is red and has 4 wheels.'
 ---
 
 ### Static public methods and fields
-Private Accessors function start with ``` # ```.
+We can create static methods and field with prefix ``` static ```. Static methods are usually utility functions, such as functions for creating or cloning objects, and static fields are 
+useful when you want a field to exist only once in each class instead of on every class instance you create.
 
 ```jsx
-class Car {
-  // Public accessor
-  get name() { return 'Honda' }
-  set name(value) {}
-
-  // Private accessor
-  get #color() { return 'red' }
-  set #color(value) {}
+class Translator {
+  static translations = {
+    yes: 'ja',
+    no: 'nein',
+    maybe: 'vielleicht',
+  };
+  static englishWords = [];
+  static germanWords = [];
+  static { // (A)
+    for (const [english, german] of Object.entries(this.translations)) {
+      this.englishWords.push(english);
+      this.germanWords.push(german);
+    }
+  }
 }
-```
-We can access the Accessors as belows:
-
-```jsx
-const carObj = new Car();
-console.log(carObj.name); // "Honda"
-console.log(carObj.color); // undefined
+console.log(Translator.englishWords, Translator.germanWords)
+//Output -> ["yes", "no", "maybe"], ["ja", "nein", "vielleicht"]
 ```
 ---
 ### Regexp Match Indices
-Logical assignment operator combines the logical operations(&&, || or ??) with assignment.
+By adding ``` /d ``` flag to regexp you will get additional information
+about the start and indices position end of each match in the input string. 
 
->TL-DR
+>Example
 
+Match indices for numbered group 
 ```jsx
-let a = 1;
-let b = 2;
-a ||= b;
-// equivalent to a = a || b
-console.log(a); // output: 1
+const matchObj = /(a+)(b+)/d.exec('aaaabb');
+console.log(matchObj);
+Output:['aaaabb', 'aaaa', 'bb', index: 0, input: 'aaaabb', groups: undefined, indices: Array(3)]
+console.log(matchObj.indices[1]);
+Output: [0, 4]
 ```
+Match indices for named groups
 ```jsx
-let c = 2;
-let d = 5;
-c &&= d;
-// equivalent to c = c && d
-console.log(c); // output: 5
+const matchObj = /(?<as>a+)(?<bs>b+)/d.exec('aaaabb');
+console.log(matchObj);
+Output: ['aaaabb', 'aaaa', 'bb', index: 0, input: 'aaaabb', groups: {as: 'aaaa', bs: 'bb'}, indices: Array(3)]
+
+//matchObj.indices.groups
+console.log(matchObj.indices.groups)
+Output:{ as: [0,4], bs: [4,6] }
 ```
-```jsx
-let e;
-let f = 2;
-e ??= f;
-// equivalent to e = e ?? f
-console.log(e) // output: 2
-
-```
-Let's see the summarize below:
-
-- ``` a ||= b ``` will return ``` a ``` if ``` a ``` is ``` a ``` truthy value, or ``` b ``` if ``` a ``` is falsy
-- ``` c &&= d ``` will return ``` d ``` if both ``` c ``` and ``` d ``` are truthy, or ``` c ``` otherwise
-- ``` e ??= f ``` will return``` f ``` if ``` e ``` is ``` null ``` or  ``` undefined ``` otherwise it will return ``` e```
-
-[Read More](https://github.com/tc39/proposal-logical-assignment)
-
 ---
 
 ### Top-level await
-
-#### WeakRef
-
-```WeakRef``` stands for Weak References. Main use of weak references is to implement caches or mappings to large objects.
-For example: we don't want to keep a lot of memory for the rarely used cached or mapping so we can allow memory to be garbage collected and generate the fresh one if we need it.
-
-Read More about javascript garbage collection [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management).
-
->TL-DR
-
-To create WeakRef we just simply use ```new WeakRef``` and to call the weakref we can use ``` .deref() ```.
-
+In old version, we can only use ``` await ``` inside the ``` async ``` function ,but this new version we can use ``` await ``` without the ``` async ``` version.
+We can use ``` await ``` to import module without calling async function.
 ```jsx
-const callback = () => {
+// Loading modules dynamically
+const messages = await import(`./messages-${language}.mjs`);
 
-  const aBigObj = new WeakRef({
-    name: "Backbencher"
-  });
-
-  console.log(aBigObj.deref().name);
-}
-
-(async function(){
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      callback(); // Guaranteed to print "Backbencher"
-      resolve();
-    }, 2000);
-  });
-
-  await new Promise((resolve) => {
-    setTimeout(() => {
-      callback(); // No Gaurantee that "Backbencher" is printed
-      resolve();
-    }, 5000);
-  });
-})();
-
-```
-As you can see the code above the second await cannot Gaurantee the word "Backbencher" is printed which means it is already garbage collected.
-
-Please make sure you use weakref only on the big obj that isn't so important for your program to run.
-
-#### Finalizers
-
-```FinalizationRegistry``` is a companion feature of ```WeakRef```. It lets programmers register callbacks to be invoked after an object is garbage collected.
-
-```jsx
-const registry = new FinalizationRegistry((value) => {
-  console.log(value);
-});
-```
-Here registry is an instance of FinalizationRegistry. The callback function passed to FinalizationRegistry gets triggered when an object is garbage collected.
-
-```jsx
-(function () {
-
-  const obj = {};
-
-  registry.register(obj, "Backbencher");
-  // this will passed the value "Backbencher" to registry when obj is garbage collected.
-  // and will print "Backbencher" as the output.
-})();
-```
---- 
-
-### Ergonomic brand checks for Private Fields
-
-```Promise.any()``` resolves if any of the supplied promises is resolved. Below we have 3 promises, which resolves at random times.
-
-```jsx
-const p1 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve("A"), Math.floor(Math.random() * 1000));
-});
-const p2 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve("B"), Math.floor(Math.random() * 1000));
-});
-const p3 = new Promise((resolve, reject) => {
-  setTimeout(() => resolve("C"), Math.floor(Math.random() * 1000));
-});
-```
-Out of ```p1```, ```p2``` and ```p3```, whichever resolves first is taken by ```Promise.any()```.
-
-```jsx
-(async function() {
-  const result = await Promise.any([p1, p2, p3]);
-  console.log(result); // Prints "A", "B" or "C"
-})();
-```
-
-What if none of the promises resolve? In that case ```Promise.any()``` throws an AggregateError exception. We need to catch it and handle it.
-
-```jsx
-const p = new Promise((resolve, reject) => reject());
-
+// Using a fallback if module loading fails
+let lodash;
 try {
-  (async function() {
-    const result = await Promise.any([p]);
-    console.log(result);
-  })();
-} catch(error) {
-  console.log(error.errors);
+  lodash = await import('https://primary.example.com/lodash');
+} catch {
+  lodash = await import('https://secondary.example.com/lodash');
 }
+
+// Using whichever resource loads fastest
+const resource = await Promise.any([
+  fetch('http://example.com/first.txt')
+    .then(response => response.text()),
+  fetch('http://example.com/second.txt')
+    .then(response => response.text()),
+]);
+
 ```
-
-[Read More](https://github.com/tc39/proposal-promise-any)
-
 ---
 
 ### New .at() method on all the built-in indexables
 
-The introduction of Numeric Separators will make it easier to read numeric values by using the _ (underscore) character to provide a separation between groups of digits.
+This function let's us reads an element at the given index. It can accept negative indexes to read elements from the end of the given datatype.
 
-Let's look at more examples:
+Let's look at the examples:
 
 ```jsx
-1_000_000_000           // Ah, so a billion
-101_475_938.38          // And this is hundreds of millions
-
-let fee = 123_00;       // $123 (12300 cents, apparently)
-let fee = 12_300;       // $12,300 (woah, that fee!)
-let amount = 12345_00;  // 12,345 (1234500 cents, apparently)
-let amount = 123_4500;  // 123.45 (4-fixed financial)
-let amount = 1_234_500; // 1,234,500
+[1,2,3,4,5].at(3)  // returns 4
+[1,2,3,4,5].at(-2)   // returns 4
 ```
-
-[Read More](https://github.com/tc39/proposal-numeric-separator)
-
+Datatypes supporting this function.
+1. String
+2. Array
+3. All Typed Array classes: Uint8Array etc.
 ---
 
 ### Object Accessible Object.prototype.hasOwnProperty()
 
-The ```Intl.ListFormat``` object is a constructor for objects that enable language-sensitive list formatting.
+It is a safe way to check that ``` propKey ``` is the own property of ``` obj ``` object. It is similar to ``` Object.prototype.hasOwnProperty ``` but it supports all object types.
 
-The following example shows how to create a formatted list using the English language.
+Example:
 ```jsx
-// Create a list formatter in your locale
-// with default values explicitly passed in.
-const lf = new Intl.ListFormat("en", {
-    localeMatcher: "best fit", // other values: "lookup"
-    type: "conjunction", // "conjunction", "disjunction" or "unit"
-    style: "long", // other values: "short" or "narrow"
-});
+const proto = {
+  protoProp: 'protoProp',
+};
 
-lf.format(['Motorcycle', 'Truck' , 'Car']);
-// > "Motorcycle, Truck, and Car"
+const obj = {
+  __proto__: proto,
+  objProp: 'objProp',
+};
+
+console.log('protoProp' in obj); // output - true.
+console.log(Object.hasOwn(obj, 'protoProp')) // output - false
+console.log(Object.hasOwn(proto, 'protoProp')); // output - true.
 ```
 
-You are not limited to English, let's try with a few different languages:
 
-```jsx
-const list = ['Apple', 'Orange', 'Banana'];
-
-// Italian
-console.log(new Intl.ListFormat('it', { style: 'long', type: 'conjunction' }).format(list));
-// Apple, Orange e Banana
-
-// Spanish
-console.log(new Intl.ListFormat('es', { style: 'long', type: 'conjunction' }).format(list));
-// Apple, Orange y Banana
-
-// German
-console.log(new Intl.ListFormat('de', { style: 'long', type: 'conjunction' }).format(list));
-// Apple, Orange und Banana
-```
-[Read More](https://github.com/tc39/proposal-intl-list-format)
-
----
-
-### ECMAScript class static initialization blocks 
-
-We can use ```dateStyle``` and ```timeStyle``` to request a ```locale-specific``` date and time of a given length.
-
-```jsx
-// short
-new Intl.DateTimeFormat("en" , {
-  timeStyle: "short"
-}).format(Date.now())
-// "2:45 PM"
-
-// medium
-new Intl.DateTimeFormat("en" , {
-  timeStyle: "medium"
-}).format(Date.now())
-// "2:45:53 PM"
-
-// long
-new Intl.DateTimeFormat("en" , {
-  timeStyle: "long"
-}).format(Date.now())
-// "2:46:05 PM GMT+7"
-```
-
-Now let's try with dateStyle:
-
-```jsx
-// short
-new Intl.DateTimeFormat("en" , {
-  dateStyle: "short"
-}).format(Date.now())
-// "7/25/20"
-
-// medium
-new Intl.DateTimeFormat("en" , {
-  dateStyle: "medium"
-}).format(Date.now())
-// "Jul 25, 2020"
-
-// long
-new Intl.DateTimeFormat("en" , {
-  dateStyle: "long"
-}).format(Date.now())
-// 
-```
-[Read More](https://github.com/tc39/proposal-intl-datetime-style)
-
-
-<p style="text-align:center">🎉🎉That's all for **What's New in Javascript ES2021**! See you next year...🎉🎉</p>
+<p style="text-align:center">🎉🎉That's all for **What's New in Javascript ES2022**! See you next year...🎉🎉</p>
