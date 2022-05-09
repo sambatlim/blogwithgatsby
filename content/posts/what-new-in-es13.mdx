@@ -1,0 +1,224 @@
+---
+title: What new in ES2022 (aka ES13)?
+date: 2022-05-09
+---
+<image src='../assets/es2022.jpg'/>
+
+<br/>
+
+If you missed out 'what new in the previous version of javascript?', you can check here [es6 - es11](/modern-javascript-what-new),and [es12](/what-new-in-es12).
+
+Every year, javascript got the new update. ECMAScript 2022(ES2022) version is expected to be released soon. 
+
+List down below is some new updates of ES2022 (aka ES13) that have been proposed in ECMAScript proposal (final stage):
+
+<ul>
+    <li><a href='#class-field-declarations'>Class field declarations</a></li>
+    <li><a href='#privatestatic-methods-and-fields'>Private,static Methods and fields</a></li>
+    <li><a href='#static-public-methods-and-fields'>Static public methods and fields</a></li>
+    <li><a href='#regexp-match-indices'>Regexp Match Indices</a></li>
+    <li><a href='#top-level-await'>Top-level await</a></li>
+    <li><a href='#new-at-method-on-all-the-built-in-indexables'>New .at() method on all the built-in indexables</a></li>
+    <li><a href='#object-accessible-objectprototypehasownproperty'>Object Accessible Object.prototype.hasOwnProperty()</a></li>
+</ul>
+
+Credits:
+1. [Brandon Lara article on medium](https://medium.com/geekculture/proposals-included-in-the-incoming-ecmascript-2022-standard-for-javascript-6119a4518904)
+2. [ECMAScript proposal](https://github.com/tc39/proposals/blob/main/finished-proposals.md)
+3. [Jasmin Virdi article on dev.to](https://dev.to/jasmin/whats-new-in-es2022-1de6)
+
+---
+
+### Class field declarations
+
+In the previous version, in order to define and initialize the class field, we need to do it in side the ``` constructor method ```.
+With the new proposal we can easily define and initialize the class field at the top level of the class.
+
+>New approach
+
+```jsx
+class Class{
+  instancePublicField = "This instance is predefined.";
+}
+```
+> Old approach
+
+```jsx
+class PublicClass{
+  constructor(value){
+    this.instancePublicField = "This instance is predefined.";
+    this.value = value;
+  }
+}
+
+```
+---
+### Private,static Methods and fields
+Private method and field can be created with prefix ``` # ```. Private Methods and Fields are only accessible inside its own class.
+
+> Example
+
+```jsx
+
+class Car {
+    #numberOfWheel = 4; // private field
+    #carColor; //required
+    static #staticPrivateField = "I am staticPrivateField."
+    constructor(value){
+      this.#carColor = value;
+    }
+
+    // this private method can access to private field 
+    // cannot access the static private field
+    #returnMyCar(){
+      return `Your car is ${this.#carColor} and has ${this.#numberOfWheel} wheels.`
+    }
+
+    // public method can access the private method
+    // cannot access static private method
+    // and can be accessed from the outside
+    returnMyStringCar(){
+      return this.#returnMyCar()
+    }
+
+    // static private method cannot access private field but can
+    // access the private static field
+    static #privateMethodCar(){
+      return this.#staticPrivateField;
+    }
+
+    // static public method can access the static private method 
+    // cannot access the private method
+    // and can be accessed from the outside
+    static publicMethodCar(){
+      return this.#privateMethodCar()
+    }
+}
+const myCar = new Car('red');
+
+myCar.carColor; // will return undefined;
+myCar.#carColor; //Error: Private field '#carColor' must be declared in an enclosing class
+
+Car.privateMethodCar(); //Error: myCar.privateMethodReturnCar is not a function
+Car.#privateMethodCar(); //Error: Private field '#privateMethodReturnCar' must be declared in an enclosing class
+Car.publicMethodCar(); //Will return 'I am staticPrivateField.'
+
+myCar.returnMyStringCar(); //will return 'Your car is red and has 4 wheels.'
+
+```
+---
+
+### Static public methods and fields
+We can create static methods and field with prefix ``` static ```. Static methods are usually utility functions, such as functions for creating or cloning objects, and static fields are 
+useful when you want a field to exist only once in each class instead of on every class instance you create.
+
+```jsx
+class Translator {
+  static translations = {
+    yes: 'ja',
+    no: 'nein',
+    maybe: 'vielleicht',
+  };
+  static englishWords = [];
+  static germanWords = [];
+  static { // (A)
+    for (const [english, german] of Object.entries(this.translations)) {
+      this.englishWords.push(english);
+      this.germanWords.push(german);
+    }
+  }
+}
+console.log(Translator.englishWords, Translator.germanWords)
+//Output -> ["yes", "no", "maybe"], ["ja", "nein", "vielleicht"]
+```
+---
+### Regexp Match Indices
+By adding ``` /d ``` flag to regexp you will get additional information
+about the start and indices position end of each match in the input string. 
+
+>Example
+
+Match indices for numbered group 
+```jsx
+const matchObj = /(a+)(b+)/d.exec('aaaabb');
+console.log(matchObj);
+Output:['aaaabb', 'aaaa', 'bb', index: 0, input: 'aaaabb', groups: undefined, indices: Array(3)]
+console.log(matchObj.indices[1]);
+Output: [0, 4]
+```
+Match indices for named groups
+```jsx
+const matchObj = /(?<as>a+)(?<bs>b+)/d.exec('aaaabb');
+console.log(matchObj);
+Output: ['aaaabb', 'aaaa', 'bb', index: 0, input: 'aaaabb', groups: {as: 'aaaa', bs: 'bb'}, indices: Array(3)]
+
+//matchObj.indices.groups
+console.log(matchObj.indices.groups)
+Output:{ as: [0,4], bs: [4,6] }
+```
+---
+
+### Top-level await
+In old version, we can only use ``` await ``` inside the ``` async ``` function ,but this new version we can use ``` await ``` without the ``` async ``` version.
+We can use ``` await ``` to import module without calling async function.
+```jsx
+// Loading modules dynamically
+const messages = await import(`./messages-${language}.mjs`);
+
+// Using a fallback if module loading fails
+let lodash;
+try {
+  lodash = await import('https://primary.example.com/lodash');
+} catch {
+  lodash = await import('https://secondary.example.com/lodash');
+}
+
+// Using whichever resource loads fastest
+const resource = await Promise.any([
+  fetch('http://example.com/first.txt')
+    .then(response => response.text()),
+  fetch('http://example.com/second.txt')
+    .then(response => response.text()),
+]);
+
+```
+---
+
+### New .at() method on all the built-in indexables
+
+This function let's us reads an element at the given index. It can accept negative indexes to read elements from the end of the given datatype.
+
+Let's look at the examples:
+
+```jsx
+[1,2,3,4,5].at(3)  // returns 4
+[1,2,3,4,5].at(-2)   // returns 4
+```
+Datatypes supporting this function.
+1. String
+2. Array
+3. All Typed Array classes: Uint8Array etc.
+---
+
+### Object Accessible Object.prototype.hasOwnProperty()
+
+It is a safe way to check that ``` propKey ``` is the own property of ``` obj ``` object. It is similar to ``` Object.prototype.hasOwnProperty ``` but it supports all object types.
+
+Example:
+```jsx
+const proto = {
+  protoProp: 'protoProp',
+};
+
+const obj = {
+  __proto__: proto,
+  objProp: 'objProp',
+};
+
+console.log('protoProp' in obj); // output - true.
+console.log(Object.hasOwn(obj, 'protoProp')) // output - false
+console.log(Object.hasOwn(proto, 'protoProp')); // output - true.
+```
+
+
+<p style="text-align:center">🎉🎉That's all for **What's New in Javascript ES2022**! See you next year...🎉🎉</p>
